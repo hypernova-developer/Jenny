@@ -1,2 +1,32 @@
-# Jenny
-Jenny is a high-performance system utility and CLI assistant. It provides real-time hardware reporting, automated application update management via Winget, and a secure password vault. Built for developers who seek "raw power" and local-first system control. Fast, lightweight, and completely local.
+Jenny AI CLI 🌑🚀
+Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
+
+🛠️ Key Features
+Hardware Detective: Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
+
+Update Manager: Scan and upgrade applications simultaneously using Winget integration.
+
+Security Vault: Generate and store cryptographically secure passwords locally.
+
+Zero Latency: No cloud, no API delays. Everything runs on your machine.
+
+🚀 Installation
+Clone the repository:
+https://github.com/hypernova-developer/Jenny.git
+
+Install dependencies:
+pip install wmi psutil
+
+Add the jenny.bat path to your system environment variables.
+
+💻 Usage
+jenny --hardware : Get system specs.
+
+jenny --check-updates : Scan for app/driver updates.
+
+jenny --upgrade-apps : Install all pending updates.
+
+jenny --vault : Secure password generation.
+
+🛡️ License
+Developed by hypernova-developer.
