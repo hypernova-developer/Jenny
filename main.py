@@ -1,4 +1,6 @@
 import sys
+import os
+import subprocess
 from hardware import HardwareDetective
 from security import JennyVault
 
@@ -50,6 +52,27 @@ def main():
                 detective.upgrade_apps(app_id)
                 print(f"[+] Process for {app_id} finished.")
 
+    elif command == "--compile":
+        if len(sys.argv) < 3:
+            print("\n[!] Error: Please specify a file to compile.")
+            return
+        
+        target_file = os.path.abspath(sys.argv[2])
+        compilex_dir = r"C:\Tools\CompileX"
+        compilex_bat = os.path.join(compilex_dir, "compilex.bat")
+        
+        if not os.path.exists(compilex_bat):
+            print(f"\n[!] Error: CompileX not found at {compilex_dir}")
+            return
+
+        current_dir = os.getcwd()
+        try:
+            print("\n[*] Initializing CompileX Engine...")
+            os.chdir(compilex_dir)
+            subprocess.run([compilex_bat, target_file], shell=True)
+        finally:
+            os.chdir(current_dir)
+
     elif command == "--vault":
         vault = JennyVault()
         new_pass = vault.generate_password()
@@ -70,6 +93,7 @@ def main():
         print("--hardware      : System components report.")
         print("--check-updates : List available updates.")
         print("--upgrade-apps  : Install app updates.")
+        print("--compile       : Compile code using CompileX.")
         print("--vault         : Secure password tools.")
         print("--version       : Version info.")
         print("--help          : Command list.")
