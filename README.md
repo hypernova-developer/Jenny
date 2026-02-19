@@ -23,6 +23,9 @@ pip install wmi psutil
 - `jenny --check-updates` : Scan for app/driver updates.
 - `jenny --upgrade-apps` : Install all pending updates.
 - `jenny --vault` : Secure password generation.
+- `jenny --compile` : Compile code using CompileX.
+- `jenny --help` : Command list.
+- `jenny --version` : Version info.
 
 ## 🛡️ License
 Developed by **hypernova-developer**.
