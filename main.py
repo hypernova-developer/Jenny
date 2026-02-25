@@ -5,6 +5,14 @@ import ctypes
 from hardware import HardwareDetective
 from security import JennyVault
 
+def get_processor_name():
+    try:
+        command = "wmic cpu get name"
+        name = subprocess.check_output(command, shell=True).decode().strip().split('\n')[1]
+        return name
+    except:
+        return "Unknown Processor"
+
 def main():
     version = "1.1.5-Beta"
 
@@ -17,11 +25,12 @@ def main():
     if command == "--hardware":
         detective = HardwareDetective()
         data = detective.get_system_summary()
+        cpu_name = get_processor_name()
         print("\n" + "="*40)
         print("    JENNY HARDWARE REPORT")
         print("="*40)
         print(f"MOTHERBOARD : {data['motherboard']}")
-        print(f"CPU         : {data['cpu']}")
+        print(f"CPU         : {cpu_name}")
         print(f"RAM         : {data['ram']}")
         print(f"RESOLUTION  : {data['resolution']}")
         print(f"STORAGE     : {data['storage']}")
@@ -70,7 +79,7 @@ def main():
     elif command == "--sentinel":
         target = sys.argv[2] if len(sys.argv) > 2 else os.getcwd()
         quoted_target = f'"{target}"'
-        core_path = os.path.join(os.path.dirname(__file__), "SentinelCore.exe")
+        core_path = os.path.join(os.path.dirname(_file_), "SentinelCore.exe")
         
         if not os.path.exists(core_path):
             print("\n[!] SentinelCore.exe missing.")
@@ -84,7 +93,7 @@ def main():
             ctypes.windll.shell32.ShellExecuteW(None, "runas", core_path, quoted_target, None, 1)
 
     elif command == "--restore":
-        core_path = os.path.join(os.path.dirname(__file__), "SentinelCore.exe")
+        core_path = os.path.join(os.path.dirname(_file_), "SentinelCore.exe")
         if not os.path.exists(core_path):
             print("\n[!] SentinelCore.exe missing.")
             return
