@@ -23,16 +23,19 @@ pip install wmi psutil
 3. Add the `jenny.bat` path to your system environment variables.
 
 ## 💻 Usage
+
 | Command | Function |
 | :--- | :--- |
-| `jenny --hardware` | Get detailed system specs and hardware health. |
-| `jenny --network-scan` | **(SyntaX)** Analyze unsigned processes and active TCP connections. |
-| `jenny --compile` | **(CompileX)** Compile projects with maximum performance focus. |
-| `jenny --check-updates` | Scan for pending app and driver updates. |
-| `jenny --upgrade-apps` | Install all pending updates via Winget. |
-| `jenny --vault` | Secure local password generation. |
-| `jenny --restore` | Restore files from the secure quarantine directory. |
-| `jenny --help` | Display the full command list. |
+| `jenny --hardware` | Display detailed system and hardware report. |
+| `jenny --check-updates` | Scan for application and driver updates. |
+| `jenny --upgrade-apps` | Upgrade installed applications via Winget. |
+| `jenny --compile` | **(CompileX)** Compile files using the high-performance engine. |
+| `jenny --sentinel` | **(SyntaX)** Scan current directory for threats. |
+| `jenny --sentinel-network` | **(SyntaX)** Scan active connections for untrusted processes. |
+| `jenny --restore` | Restore files from the Sentinel quarantine. |
+| `jenny --vault` | Generate and store cryptographically secure passwords. |
+| `jenny --version` | Show current engine version. |
+| `jenny --help` | Show the full command list. |
 
 ## 🛡️ License
 Developed by **hypernova-developer**.
