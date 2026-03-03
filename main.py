@@ -14,7 +14,7 @@ def get_processor_name():
         return "Unknown Processor"
 
 def main():
-    version = "1.1.5-Beta"
+    version = "1.4.2-Beta"
 
     if len(sys.argv) < 2:
         print("\n[!] No command entered. Try: jenny --help")
@@ -79,30 +79,37 @@ def main():
     elif command == "--sentinel":
         target = sys.argv[2] if len(sys.argv) > 2 else os.getcwd()
         quoted_target = f'"{target}"'
-        core_path = os.path.join(os.path.dirname(_file_), "SentinelCore.exe")
-        
+        core_path = os.path.join(os.path.dirname(__file__), "SentinelCore.exe")
         if not os.path.exists(core_path):
             print("\n[!] SentinelCore.exe missing.")
             return
-
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
         if is_admin:
             subprocess.run([core_path, target])
         else:
-            print("\n[*] Requesting Admin Privileges... Check the new window.")
             ctypes.windll.shell32.ShellExecuteW(None, "runas", core_path, quoted_target, None, 1)
 
-    elif command == "--restore":
-        core_path = os.path.join(os.path.dirname(_file_), "SentinelCore.exe")
+    elif command == "--sentinel-network":
+        core_path = os.path.join(os.path.dirname(__file__), "SentinelCore.exe")
         if not os.path.exists(core_path):
             print("\n[!] SentinelCore.exe missing.")
             return
-        
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+        if is_admin:
+            subprocess.run([core_path, "--network-scan"])
+        else:
+            print("\n[*] Requesting Admin Privileges for Network Analysis...")
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", core_path, "--network-scan", None, 1)
+
+    elif command == "--restore":
+        core_path = os.path.join(os.path.dirname(__file__), "SentinelCore.exe")
+        if not os.path.exists(core_path):
+            print("\n[!] SentinelCore.exe missing.")
+            return
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
         if is_admin:
             subprocess.run([core_path, "--restore"])
         else:
-            print("\n[*] Requesting Admin Privileges for Restore...")
             ctypes.windll.shell32.ShellExecuteW(None, "runas", core_path, "--restore", None, 1)
 
     elif command == "--vault":
@@ -120,17 +127,18 @@ def main():
 
     elif command == "--help":
         print("\nJenny AI CLI - Available Commands:")
-        print("-" * 60)
-        print(f"{'--hardware':<20} | Display detailed system and hardware report")
-        print(f"{'--check-updates':<20} | Scan for application and driver updates")
-        print(f"{'--upgrade-apps':<20} | Upgrade installed applications via Winget")
-        print(f"{'--compile':<20} | Compile files using CompileX engine")
-        print(f"{'--sentinel':<20} | Run security scan on a directory (Sentinel Core)")
-        print(f"{'--restore':<20} | Restore files from Sentinel quarantine")
-        print(f"{'--vault':<20} | Generate and store secure passwords")
-        print(f"{'--version':<20} | Show current engine version")
-        print(f"{'--help':<20} | Show this help menu")
-        print("-" * 60)
+        print("-" * 65)
+        print(f"{'--hardware':<22} | Display detailed system and hardware report")
+        print(f"{'--check-updates':<22} | Scan for application and driver updates")
+        print(f"{'--upgrade-apps':<22} | Upgrade installed applications via Winget")
+        print(f"{'--compile':<22} | Compile files using CompileX engine")
+        print(f"{'--sentinel':<22} | Scan directory for threats (Sentinel Core)")
+        print(f"{'--sentinel-network':<22} | Scan active network connections for untrusted processes")
+        print(f"{'--restore':<22} | Restore files from Sentinel quarantine")
+        print(f"{'--vault':<22} | Generate and store secure passwords")
+        print(f"{'--version':<22} | Show current engine version")
+        print(f"{'--help':<22} | Show this help menu")
+        print("-" * 65)
 
 if __name__ == "__main__":
     main()
