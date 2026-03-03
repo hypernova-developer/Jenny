@@ -18,6 +18,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 2. Install dependencies:
 ```bash
 pip install wmi psutil
+```
 
 3. Add the `jenny.bat` path to your system environment variables.
 
