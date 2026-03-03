@@ -13,9 +13,10 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 ## 🚀 Installation
 
 1. Clone the repository:
-https://github.com/hypernova-developer/Jenny.git
+[https://github.com/hypernova-developer/Jenny.git](https://github.com/hypernova-developer/Jenny.git)
 
 2. Install dependencies:
+```bash
 pip install wmi psutil
 
 3. Add the `jenny.bat` path to your system environment variables.
