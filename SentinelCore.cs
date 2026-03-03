@@ -15,6 +15,11 @@ namespace bettercpp.sentinel
         [DllImport("Wintrust.dll", PreserveSig = true, CharSet = CharSet.Unicode)]
         static extern int WinVerifyTrust(IntPtr hwnd, [MarshalAs(UnmanagedType.LPStruct)] Guid pgActionID, WinTrustData pWVTData);
 
+        static string version = "2.0.0-LTS";
+        static string quarantineDir = @"C:\Tools\Jenny\Quarantine";
+        static string currentSelfHash = "";
+        static Dictionary<string, ThreatInfo> detectedThreats = new Dictionary<string, ThreatInfo>();
+
         static List<string> criticalServices = new List<string> {
             "wpcmonsvc", "svchost", "lsass", "services", "wininit",
             "csrss", "smss", "winlogon", "taskhostw", "spoolsv"
@@ -24,9 +29,9 @@ namespace bettercpp.sentinel
             @"C:\Tools", @"C:\mingw64", @"C:\msys64", @"E:\Developing"
         };
 
-        static string quarantineDir = @"C:\Tools\Jenny\Quarantine";
-        static string currentSelfHash = "";
-        static Dictionary<string, ThreatInfo> detectedThreats = new Dictionary<string, ThreatInfo>();
+        static List<string> driverWhitelist = new List<string> {
+            "pusat k3", "hid.exe", "mouseconfig", "keyboard driver", "peripheral"
+        };
 
         class ThreatInfo {
             public int Score;
@@ -49,7 +54,7 @@ namespace bettercpp.sentinel
             }
 
             string path = args.Length > 0 ? args[0] : Environment.CurrentDirectory;
-            Console.WriteLine("\n[SENTINEL CORE] Precision Scan Initiated: " + path);
+            Console.WriteLine("\n[SENTINEL CORE v" + version + "] Precision Scan Initiated: " + path);
 
             try {
                 ScanDirectoryRecursively(path);
@@ -66,26 +71,21 @@ namespace bettercpp.sentinel
             Console.WriteLine("\n[SENTINEL NETWORK] Analyzing Unsigned & External Connections...");
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             TcpConnectionInformation[] connections = properties.GetActiveTcpConnections();
-            
             string winPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows).ToLower();
             
-            Process[] allProcesses = Process.GetProcesses();
-            foreach (Process p in allProcesses)
+            foreach (Process p in Process.GetProcesses())
             {
                 try {
                     string path = p.MainModule.FileName;
-                    string pathLower = path.ToLower();
-
-                    if (GetFileHash(path) == currentSelfHash) continue;
+                    if (IsHardwareDriver(path) || GetFileHash(path) == currentSelfHash) continue;
 
                     bool isSigned = IsFileSigned(path);
-                    bool isTrustedSource = pathLower.Contains("windowsapps") || pathLower.Contains("winget");
-                    bool isSystemFile = pathLower.StartsWith(winPath) || pathLower.Contains(@"\windows\") || pathLower.Contains(@"\winsxs\");
+                    bool isTrusted = path.ToLower().Contains("windowsapps") || path.ToLower().Contains("winget");
+                    bool isSys = path.ToLower().StartsWith(winPath) || path.ToLower().Contains(@"\windows\");
 
-                    if (!isSigned && !isTrustedSource && !isSystemFile)
+                    if (!isSigned && !isTrusted && !isSys)
                     {
-                        bool hasActiveTcp = connections.Any(c => c.State == TcpState.Established);
-                        if (hasActiveTcp)
+                        if (connections.Any(c => c.State == TcpState.Established))
                         {
                             if (!detectedThreats.ContainsKey(path))
                                 detectedThreats.Add(path, new ThreatInfo { Score = 100, Reasons = new List<string> { "Unsigned process with active network activity" } });
@@ -96,18 +96,25 @@ namespace bettercpp.sentinel
             ReportAndHandleThreats();
         }
 
+        static bool IsHardwareDriver(string path)
+        {
+            string fileName = Path.GetFileName(path).ToLower();
+            string pathLower = path.ToLower();
+            return driverWhitelist.Any(d => fileName.Contains(d) || pathLower.Contains(@"\pusat\") || pathLower.Contains(@"\peripheral\"));
+        }
+
         static void ReportAndHandleThreats()
         {
             Console.WriteLine("\n" + new string('-', 50));
-            Console.WriteLine(string.Format("[+] Analysis Finished. Total Threats: {0}", detectedThreats.Count));
+            Console.WriteLine("[+] Analysis Finished. Total Threats: " + detectedThreats.Count);
 
             if (detectedThreats.Count > 0) {
                 foreach (KeyValuePair<string, ThreatInfo> entry in detectedThreats) {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(string.Format("\n-> {0} | TOTAL SCORE: {1}/100", Path.GetFileName(entry.Key), entry.Value.Score));
+                    Console.WriteLine("\n-> " + Path.GetFileName(entry.Key) + " | TOTAL SCORE: " + entry.Value.Score + "/100");
                     Console.ResetColor();
-                    foreach (string reason in entry.Value.Reasons) Console.WriteLine(string.Format("   [!] {0}", reason));
-                    Console.WriteLine(string.Format("   [#] SHA256: {0}", GetFileHash(entry.Key)));
+                    foreach (string reason in entry.Value.Reasons) Console.WriteLine("   [!] " + reason);
+                    Console.WriteLine("   [#] SHA256: " + GetFileHash(entry.Key));
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\n[?] Move detected files to secure quarantine? (-y / -n): ");
@@ -121,7 +128,7 @@ namespace bettercpp.sentinel
         static void ScanDirectoryRecursively(string root)
         {
             string pathLower = root.ToLower();
-            if (pathLower.Contains(@"c:\windows") || pathLower.Contains("winsxs") || pathLower.Contains("syswow64")) return;
+            if (pathLower.Contains(@"c:\windows") || pathLower.Contains("winsxs")) return;
 
             try {
                 foreach (string file in Directory.GetFiles(root, "*.exe")) {
@@ -136,19 +143,21 @@ namespace bettercpp.sentinel
 
         static int AnalyzeFile(string fullPath, out List<string> reasons)
         {
-            int threatScore = 0;
             reasons = new List<string>();
+            if (IsHardwareDriver(fullPath)) return 0;
+
+            int threatScore = 0;
             string fileName = Path.GetFileNameWithoutExtension(fullPath).ToLower();
             string pathLower = fullPath.ToLower();
 
             bool isSigned = IsFileSigned(fullPath);
             bool isStartup = CheckStartupStatus(fullPath);
-            bool isTrustedSource = pathLower.Contains(@"\windowsapps\") || pathLower.Contains(@"\microsoft\winget\");
+            bool isTrusted = pathLower.Contains(@"\windowsapps\") || pathLower.Contains(@"\microsoft\winget\");
 
             if (!isSigned) { 
-                if (!isTrustedSource) {
+                if (!isTrusted) {
                     threatScore += 50; 
-                    reasons.Add("No Valid Digital Signature (Embedded or Catalog)");
+                    reasons.Add("No Valid Digital Signature");
                 } else {
                     threatScore += 10;
                     reasons.Add("Unsigned but verified Package Origin");
@@ -160,7 +169,7 @@ namespace bettercpp.sentinel
                 reasons.Add("Safe Zone: Developer Workspace");
             }
 
-            if (isStartup && !isSigned && !isTrustedSource) { 
+            if (isStartup && !isSigned && !isTrusted) { 
                 threatScore += 50; 
                 reasons.Add("Persistence Alert: Unsigned file in Startup"); 
             }
@@ -168,11 +177,11 @@ namespace bettercpp.sentinel
             foreach (string service in criticalServices) {
                 if (fileName == service && !pathLower.Contains(@"c:\windows\system32")) {
                     threatScore += 70;
-                    reasons.Add(string.Format("Location Anomaly: {0} masquerading outside System32", service));
+                    reasons.Add("Location Anomaly: " + service + " masquerading");
                 }
                 if (IsSimilar(fileName, service)) {
                     threatScore += 50;
-                    reasons.Add(string.Format("Typosquatting: Mimicking {0}", service));
+                    reasons.Add("Typosquatting: Mimicking " + service);
                 }
             }
             return threatScore;
@@ -206,8 +215,7 @@ namespace bettercpp.sentinel
         }
 
         static bool IsSimilar(string s1, string s2) {
-            if (s1 == s2) return false;
-            if (Math.Abs(s1.Length - s2.Length) > 1) return false;
+            if (s1 == s2 || Math.Abs(s1.Length - s2.Length) > 1) return false;
             int diffs = 0;
             int minLen = Math.Min(s1.Length, s2.Length);
             for (int i = 0; i < minLen; i++) if (s1[i] != s2[i]) diffs++;
@@ -219,7 +227,9 @@ namespace bettercpp.sentinel
                 using (SHA256 sha = SHA256.Create()) {
                     using (FileStream fs = File.OpenRead(filename)) {
                         byte[] hash = sha.ComputeHash(fs);
-                        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                        string hashStr = "";
+                        foreach (byte b in hash) hashStr += b.ToString("x2");
+                        return hashStr;
                     }
                 }
             } catch { return "error"; }
@@ -240,8 +250,7 @@ namespace bettercpp.sentinel
 
         static void RestoreQuarantine()
         {
-            string[] mapFiles = Directory.GetFiles(quarantineDir, "*.map");
-            foreach (string map in mapFiles) {
+            foreach (string map in Directory.GetFiles(quarantineDir, "*.map")) {
                 try {
                     string originalPath = File.ReadAllText(map).Trim();
                     string lockedFile = map.Replace(".map", ".jny_locked");
