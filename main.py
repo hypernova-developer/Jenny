@@ -14,7 +14,7 @@ def get_processor_name():
         return "Unknown Processor"
 
 def main():
-    version = "1.4.2-STS"
+    version = "2.0.0-LTS"
 
     if len(sys.argv) < 2:
         print("\n[!] No command entered. Try: jenny --help")
