@@ -23,6 +23,8 @@ pip install wmi psutil
 
 3. Add the `jenny.bat` path to your system environment variables.
 
+WARNING: You can also install Jenny with Genesis Installer program in my GitHub. It will be much easier.
+
 ## 💻 Usage
 
 | Command | Function |
