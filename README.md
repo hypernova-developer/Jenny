@@ -7,6 +7,8 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 - **Update Manager:** Scan and upgrade applications simultaneously using Winget integration.
 - **Security Vault:** Generate and store cryptographically secure passwords locally.
 - **Zero Latency:** No cloud, no API delays. Everything runs on your machine.
+- **SyntaX (Sentinel Core):** Advanced heuristic and network analysis to detect unsigned processes and suspicious external connections.
+- **CompileX Engine:** A high-performance compilation tool optimized for speed and "pure power," designed for developers seeking efficiency.
 
 ## 🚀 Installation
 
@@ -19,13 +21,16 @@ pip install wmi psutil
 3. Add the `jenny.bat` path to your system environment variables.
 
 ## 💻 Usage
-- `jenny --hardware` : Get system specs.
-- `jenny --check-updates` : Scan for app/driver updates.
-- `jenny --upgrade-apps` : Install all pending updates.
-- `jenny --vault` : Secure password generation.
-- `jenny --compile` : Compile code using CompileX.
-- `jenny --help` : Command list.
-- `jenny --version` : Version info.
+| Command | Function |
+| :--- | :--- |
+| `jenny --hardware` | Get detailed system specs and hardware health. |
+| `jenny --network-scan` | **(SyntaX)** Analyze unsigned processes and active TCP connections. |
+| `jenny --compile` | **(CompileX)** Compile projects with maximum performance focus. |
+| `jenny --check-updates` | Scan for pending app and driver updates. |
+| `jenny --upgrade-apps` | Install all pending updates via Winget. |
+| `jenny --vault` | Secure local password generation. |
+| `jenny --restore` | Restore files from the secure quarantine directory. |
+| `jenny --help` | Display the full command list. |
 
 ## 🛡️ License
 Developed by **hypernova-developer**.
