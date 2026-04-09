@@ -31,6 +31,9 @@ WARNING-2: I recommend you to install the program from the Releases Page in the 
 | Command | Function |
 | :--- | :--- |
 | `jenny --hardware` | Display detailed system and hardware report. |
+| `jenny --software` | Display OS version, build and kernel information. |
+| `jenny --px-e` | (ProtocolX) Encode secure message via external binary. |
+| `jenny --px-d` | (ProtocolX) Decode secure message via external binary. |
 | `jenny --check-updates` | Scan for application and driver updates. |
 | `jenny --upgrade-apps` | Upgrade installed applications via Winget. |
 | `jenny --compile` | **(CompileX)** Compile files using the high-performance engine. |
