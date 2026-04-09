@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 import ctypes
+import platform
 from hardware import HardwareDetective
 from security import JennyVault
 
@@ -13,8 +14,40 @@ def get_processor_name():
     except:
         return "Unknown Processor"
 
+def get_software_info():
+    system = platform.system()
+    if system == "Windows":
+        try:
+            build = subprocess.check_output("powershell (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microslop\\Windows NT\\CurrentVersion').CurrentBuild", shell=True).decode().strip()
+            version = subprocess.check_output("powershell (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microslop\\Windows NT\\CurrentVersion').DisplayVersion", shell=True).decode().strip()
+            return f"Windows {platform.release()} {version} (Build {build})"
+        except:
+            return f"Windows {platform.release()}"
+    elif system == "Linux":
+        try:
+            with open("/etc/os-release") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith("PRETTY_NAME"):
+                        return line.split("=")[1].strip().replace('"', '')
+            return "GNU/Linux"
+        except:
+            return "GNU/Linux"
+    return f"{system} {platform.release()}"
+
+def run_protocolx(mode, input_text):
+    px_path = os.path.join(os.path.dirname(__file__), "ProtocolX.exe")
+    if not os.path.exists(px_path):
+        print("\n[!] ProtocolX.exe missing.")
+        return
+    try:
+        result = subprocess.run([px_path, mode, input_text], capture_output=True, text=True, shell=True)
+        print(f"\n{result.stdout.strip()}")
+    except Exception as e:
+        print(f"\n[!] ProtocolX execution error: {e}")
+
 def main():
-    version = "2.0.0-LTS"
+    version = "3.0.0-LTS"
 
     if len(sys.argv) < 2:
         print("\n[!] No command entered. Try: jenny --help")
@@ -38,6 +71,28 @@ def main():
             print(f"GPU {i}       : {gpu['name']}")
             print(f"DRIVER {i}    : {gpu['driver']}")
         print("="*40 + "\n")
+
+    elif command == "--software":
+        info = get_software_info()
+        print("\n" + "="*40)
+        print("    JENNY SOFTWARE REPORT")
+        print("="*40)
+        print(f"OS VERSION  : {info}")
+        print(f"KERNEL      : {platform.version()}")
+        print(f"ARCH        : {platform.machine()}")
+        print("="*40 + "\n")
+
+    elif command == "--px-e":
+        if len(sys.argv) < 3:
+            print("\n[!] Message required.")
+            return
+        run_protocolx("--encode", sys.argv[2])
+
+    elif command == "--px-d":
+        if len(sys.argv) < 3:
+            print("\n[!] Encoded code required.")
+            return
+        run_protocolx("--decode", sys.argv[2])
 
     elif command == "--check-updates":
         detective = HardwareDetective()
@@ -67,14 +122,13 @@ def main():
             print("\n[!] Specify a file.")
             return
         target_file = os.path.abspath(sys.argv[2])
-        compilex_dir = r"C:\Tools\CompileX"
+        output_dir = os.getcwd()
+        compilex_dir = r"D:\Tools\CompileX"
         compilex_bat = os.path.join(compilex_dir, "compilex.bat")
-        current_dir = os.getcwd()
         try:
-            os.chdir(compilex_dir)
-            subprocess.run([compilex_bat, target_file], shell=True)
-        finally:
-            os.chdir(current_dir)
+            subprocess.run([compilex_bat, target_file, output_dir], shell=True)
+        except Exception as e:
+            print(f"\n[!] Compilation error: {e}")
 
     elif command == "--sentinel":
         target = sys.argv[2] if len(sys.argv) > 2 else os.getcwd()
@@ -98,7 +152,6 @@ def main():
         if is_admin:
             subprocess.run([core_path, "--network-scan"])
         else:
-            print("\n[*] Requesting Admin Privileges for Network Analysis...")
             ctypes.windll.shell32.ShellExecuteW(None, "runas", core_path, "--network-scan", None, 1)
 
     elif command == "--restore":
@@ -129,6 +182,9 @@ def main():
         print("\nJenny AI CLI - Available Commands:")
         print("-" * 65)
         print(f"{'--hardware':<22} | Display detailed system and hardware report")
+        print(f"{'--software':<22} | Display OS version, build and kernel info")
+        print(f"{'--px-e':<22} | (ProtocolX) Encode secure message via external binary")
+        print(f"{'--px-d':<22} | (ProtocolX) Decode secure message via external binary")
         print(f"{'--check-updates':<22} | Scan for application and driver updates")
         print(f"{'--upgrade-apps':<22} | Upgrade installed applications via Winget")
         print(f"{'--compile':<22} | Compile files using CompileX engine")
