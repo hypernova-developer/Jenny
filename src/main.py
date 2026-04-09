@@ -182,7 +182,7 @@ def main():
         print("\nJenny AI CLI - Available Commands:")
         print("-" * 65)
         print(f"{'--hardware':<22} | Display detailed system and hardware report")
-        print(f"{'--software':<22} | Display OS version, build and kernel info")
+        print(f"{'--software':<22} | Display OS version, build and kernel information")
         print(f"{'--px-e':<22} | (ProtocolX) Encode secure message via external binary")
         print(f"{'--px-d':<22} | (ProtocolX) Decode secure message via external binary")
         print(f"{'--check-updates':<22} | Scan for application and driver updates")
