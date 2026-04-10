@@ -47,7 +47,7 @@ def run_protocolx(mode, input_text):
         print(f"\n[!] ProtocolX execution error: {e}")
 
 def main():
-    version = "3.0.0-LTS"
+    version = "v3.1.0-LTS"
 
     if len(sys.argv) < 2:
         print("\n[!] No command entered. Try: jenny --help")
