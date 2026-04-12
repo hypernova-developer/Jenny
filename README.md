@@ -1,7 +1,7 @@
 # Jenny AI CLI 🌑🚀
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
-- Current Version: **3.1.0-LTS**
+- Current Version: **4.0.0-LTS**
 
 ## 🛠️ Key Features
 - **Hardware Detective:** Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
@@ -10,6 +10,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 - **Zero Latency:** No cloud, no API delays. Everything runs on your machine.
 - **SyntaX (Sentinel Core):** Advanced heuristic and network analysis to detect unsigned processes and suspicious external connections.
 - **CompileX Engine:** A high-performance compilation tool optimized for speed and "pure power," designed for developers seeking efficiency.
+- **Note**: The CompileX module switched from batch processing to C++ technology.
 
 ## 🚀 Installation
 
