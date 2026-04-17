@@ -1,7 +1,7 @@
 # Jenny AI CLI 🌑🚀
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
-- Current Version: **4.0.0-LTS**
+- Current Version: **4.1.1-LTS**
 
 ## 🛠️ Key Features
 - **Hardware Detective:** Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
