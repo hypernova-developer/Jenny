@@ -38,8 +38,8 @@ WARNING-2: I recommend you to install the program from the Releases Page in the 
 | `jenny --check-updates` | Scan for application and driver updates. |
 | `jenny --upgrade-apps` | Upgrade installed applications via Winget. |
 | `jenny --compile` | **(CompileX)** Compile files using the high-performance engine. |
-| `jenny --sentinel` | **(SyntaX)** Scan current directory for threats. |
-| `jenny --sentinel-network` | **(SyntaX)** Scan active connections for untrusted processes. |
+| `jenny --sentinel` | **(Sentinel)** Scan current directory for threats. |
+| `jenny --sentinel-network` | **(Sentinel)** Scan active connections for untrusted processes. |
 | `jenny --restore` | Restore files from the Sentinel quarantine. |
 | `jenny --vault` | Generate and store cryptographically secure passwords. |
 | `jenny --version` | Show current engine version. |
