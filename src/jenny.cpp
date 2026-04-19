@@ -51,7 +51,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v4.1.1-LTS";
+    std::string version = "v4.2.1-LTS";
 
     if (argc < 2)
     {
@@ -149,8 +149,8 @@ int main(int argc, char* argv[])
         printf("%-22s | %s\n", "--check-updates", "Scan for updates");
         printf("%-22s | %s\n", "--upgrade-apps", "Upgrade via Winget");
         printf("%-22s | %s\n", "--compile", "(CompileX) Compile files");
-        printf("%-22s | %s\n", "--sentinel", "(SyntaX) Threat scan");
-        printf("%-22s | %s\n", "--sentinel-network", "(SyntaX) Network scan");
+        printf("%-22s | %s\n", "--sentinel", "(Sentinel) Threat scan");
+        printf("%-22s | %s\n", "--sentinel-network", "(Sentinel) Network scan");
         printf("%-22s | %s\n", "--vault", "Password manager");
         std::cout << std::string(75, '-') << std::endl;
     }
