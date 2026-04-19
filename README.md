@@ -8,7 +8,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 - **Update Manager:** Scan and upgrade applications simultaneously using Winget integration.
 - **Security Vault:** Generate and store cryptographically secure passwords locally.
 - **Zero Latency:** No cloud, no API delays. Everything runs on your machine.
-- **SyntaX (Sentinel Core):** Advanced heuristic and network analysis to detect unsigned processes and suspicious external connections.
+- **Sentinel Core:** Advanced heuristic and network analysis to detect unsigned processes and suspicious external connections.
 - **CompileX Engine:** A high-performance compilation tool optimized for speed and "pure power," designed for developers seeking efficiency.
 - **Note**: The CompileX module switched from batch processing to C++ technology.
 
