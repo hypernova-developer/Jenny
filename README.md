@@ -42,7 +42,6 @@ WARNING-2: I recommend you to install the program from the Releases Page in the 
 | `jenny --sentinel-network` | **(Sentinel)** Scan active connections for untrusted processes. |
 | `jenny --restore` | Restore files from the Sentinel quarantine. |
 | `jenny --vault` | Generate and store cryptographically secure passwords. |
-| `jenny --version` | Show current engine version. |
 | `jenny --help` | Show the full command list. |
 
 ## 🛡️ License
