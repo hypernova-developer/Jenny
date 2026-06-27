@@ -10,7 +10,7 @@ git clone https://github.com/hypernova-developer/Jenny.git
 ```
 
 ## Preparing Files
-A compiler is needed for this section. If you do not have one, I highly recommend GCC from GNU. You can install it [here](winlibs.com)
+A compiler is needed for this section. If you do not have one, I highly recommend GCC (GNU Compiler Collection). You can install it [here](winlibs.com)
 Use the command below to go to the folder where source codes are at:
 
 ```bash
