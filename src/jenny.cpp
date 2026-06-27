@@ -3,10 +3,45 @@
 #include <vector>
 #include <windows.h>
 #include <filesystem>
+#include <fstream>
+#include <algorithm>
 #include "HardwareDetective.hpp"
 #include "JennyVault.hpp"
 
 namespace fs = std::filesystem;
+
+struct Config
+{
+    std::string gcc;
+    std::string gxx;
+    std::string gfortran;
+    std::string csc;
+    std::string python;
+    std::string syntax_inc;
+    std::string raylib_inc;
+    std::string raylib_lib;
+    std::string quarantine_dir;
+};
+
+Config loadConfig()
+{
+    Config cfg;
+    std::ifstream file("jenny.conf");
+    if (file.is_open())
+    {
+        std::getline(file, cfg.gcc);
+        std::getline(file, cfg.gxx);
+        std::getline(file, cfg.gfortran);
+        std::getline(file, cfg.csc);
+        std::getline(file, cfg.python);
+        std::getline(file, cfg.syntax_inc);
+        std::getline(file, cfg.raylib_inc);
+        std::getline(file, cfg.raylib_lib);
+        std::getline(file, cfg.quarantine_dir);
+        file.close();
+    }
+    return cfg;
+}
 
 std::string getProcessorName()
 {
@@ -31,16 +66,38 @@ std::string getProcessorName()
 std::string getSoftwareInfo()
 {
     char buffer[128];
-    std::string build = "Unknown";
-    FILE* pipe = _popen("powershell (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').CurrentBuild", "r");
+    std::string osName = "Unknown Windows";
+    
+    FILE* pipe = _popen("wmic os get Caption", "r");
     if (pipe)
     {
-        if (fgets(buffer, 128, pipe) != NULL) build = buffer;
+        std::string wmicOutput = "";
+        while (fgets(buffer, 128, pipe) != NULL) wmicOutput += buffer;
         _pclose(pipe);
+        
+        size_t pos = wmicOutput.find('\n');
+        if (pos != std::string::npos)
+        {
+            osName = wmicOutput.substr(pos + 1);
+        }
     }
+    
+    osName.erase(std::remove(osName.begin(), osName.end(), '\n'), osName.end());
+    osName.erase(std::remove(osName.begin(), osName.end(), '\r'), osName.end());
+    while(!osName.empty() && osName.back() == ' ') osName.pop_back();
+
+    std::string build = "Unknown";
+    FILE* pipeBuild = _popen("powershell (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').CurrentBuild", "r");
+    if (pipeBuild)
+    {
+        if (fgets(buffer, 128, pipeBuild) != NULL) build = buffer;
+        _pclose(pipeBuild);
+    }
+    
     build.erase(std::remove(build.begin(), build.end(), '\n'), build.end());
     build.erase(std::remove(build.begin(), build.end(), '\r'), build.end());
-    return "Windows " + build;
+
+    return osName + " (Build " + build + ")";
 }
 
 void runExternal(std::string exeName, std::string args)
@@ -51,7 +108,8 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v4.2.1-LTS";
+    std::string version = "v5.1.4-LTS";
+    Config cfg = loadConfig();
 
     if (argc < 2)
     {
