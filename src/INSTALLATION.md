@@ -21,7 +21,7 @@ cd "src/"
 You will have to compile all of the source codes inside the folder. Before this section, be sure that you added your compiler as an environment variable. If everything is alright, you can use the commands below:
 
 ```bash
-g++ .\jenny.cpp -o jenny.exe -O3 -lwininet -lole32 -loleaut32 -lwbemuuid
+g++ .\jenny.cpp -o jenny.exe -O3 -lole32 -loleaut32 -lwbemuuid
 ```
 
 ```bash
