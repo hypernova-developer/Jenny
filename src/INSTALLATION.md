@@ -32,3 +32,13 @@ g++ .\SentinelCore.cpp -o SentinelCore.exe -O3 -std=c++17 -lwintrust -lbcrypt -l
 g++ .\compilex.cpp -o compilex|engine.exe -O3 -std=c++20
 ```
 
+```powershell
+g++ .\ProtocolX.cpp -o ProtocolX.exe -O3 -std=c++20
+```
+
+## Completing Installation
+Define "...\Jenny\src" as an environment variable. After this, jenny.exe file will be executed from wherever you are. 
+
+## Thanks
+Thanks for reading this document. Good luck with your own projects.
+ > **hypernova-developer**
