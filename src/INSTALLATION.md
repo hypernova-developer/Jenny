@@ -29,7 +29,7 @@ g++ .\SentinelCore.cpp -o SentinelCore.exe -O3 -std=c++17 -lwintrust -lbcrypt -l
 ```
 
 ```bash
-g++ .\compilex.cpp -o compilex|engine.exe -O3 -std=c++20
+g++ .\compilex.cpp -o compilex_engine.exe -O3 -std=c++20
 ```
 
 ```bash
