@@ -3,6 +3,9 @@
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
 - Current Version: **5.1.4-LTS**
 
+## ❇️ Release Notes for **Jenny v5.1.4-LTS**:
+Jenny started using a configurator file to access the binaries and files needed to run. Paths belong to me will not be burned into executables starting from this release.
+
 ## 🛠️ Key Features
 - **Hardware Detective:** Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
 - **Update Manager:** Scan and upgrade applications simultaneously using Winget integration.
