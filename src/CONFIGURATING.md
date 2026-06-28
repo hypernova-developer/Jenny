@@ -2,28 +2,28 @@
 Every line holds the path of one simple and still file. 
 
 ## 1st Line
-gcc.exe
+`gcc.exe`
 
 ## 2nd Line
-g++.exe
+`g++.exe`
 
 ## 3rd Line
-gfortran.exe
+`gfortran.exe`
 
 ## 4th Line
-csc.exe
+`csc.exe`
 
 ## 5th Line
-python.exe
+`python.exe`
 
 ## 6th Line
-Fortran Module from the [SyntaX Project](https://github.com/hypernova-developer/SyntaX)
+`Fortran` Module from the [SyntaX Project](https://github.com/hypernova-developer/SyntaX)
 
 ## 7th Line
 `include` folder from the [Raylib Project](https://github.com/raysan5/raylib)
 
 ## 8th Line
-`lib` folder frfom the [Raylib Project](https://github.com/raysan5/raylib)
+`lib` folder from the [Raylib Project](https://github.com/raysan5/raylib)
 
 ## 9th Line
 `Quarantine` folder from the [Jenny Project](https://github.com/hypernova-developer/Jenny)
