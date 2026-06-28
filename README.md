@@ -19,6 +19,9 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 ## 🚀 Installation
 Read the [manual](src/INSTALLATION.md) to learn about installation.
 
+## 🛞 Configutation
+Read the [manual](src/CONFIGURATING.md) to learn about installation.
+
 ## 💻 Usage
 
 | Command | Function |
