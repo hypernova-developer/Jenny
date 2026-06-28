@@ -39,6 +39,9 @@ g++ .\ProtocolX.cpp -o ProtocolX.exe -O3 -std=c++20
 ## Completing Installation
 Define "...\Jenny\src" as an environment variable. After this, jenny.exe file will be executed from wherever you are. 
 
+## Configurating Jenny
+Jenny uses [a configuration file](jenny.conf) for settings. Nothing will be burned into binaries. If you change settings and paths, you will not need to compile the files again. Before running **Jenny**, be sure that you edited [jenny.conf](jenny.conf). 
+
 ## Thanks
 Thanks for reading this document. Good luck with your own projects.
  > **hypernova-developer**
