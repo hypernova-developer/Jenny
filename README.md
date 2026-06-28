@@ -40,6 +40,9 @@ Read the [manual](src/CONFIGURATING.md) to learn about installation.
 | `jenny --vault` | Generate and store cryptographically secure passwords. |
 | `jenny --help` | Show the full command list. |
 
+## 🏛️ Needed Empty Space
+Jenny takes 3.26 MB space in my PC alone itself. It might be different on other devices. Only for Jenny, 6 MB space will be enough. 
+
 ## 🛡️ License
 Protected with **GNU General Public License v3.0**.
-Developed by **hypernova-developer**.
+Maintained, preserved, coded, kept up and developed by **hypernova-developer**.
