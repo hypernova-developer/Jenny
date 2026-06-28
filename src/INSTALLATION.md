@@ -2,7 +2,7 @@
 This file is an installation guide for new users. Please do everything mentioned in this document. 
 
 ## Downloading Jenny
-**Git** is needed for this section. If you had not installed, you can install Git [here](https://git-scm.com/install/windows/)
+**Git** is needed for this section. If you had not installed, you can install [Git](https://git-scm.com/install/windows/) from it's official website. 
 Open a new terminal window. Copy and paste the command below:
 
 ```bash
@@ -10,7 +10,7 @@ git clone https://github.com/hypernova-developer/Jenny.git
 ```
 
 ## Preparing Files
-A compiler is needed for this section. If you do not have one, I highly recommend GCC (GNU Compiler Collection). You can install it [here](winlibs.com)
+A compiler is needed for this section. If you do not have one, I highly recommend [GCC](winlibs.com/) for performance and security. 
 Use the command below to go to the folder where source codes are at:
 
 ```bash
