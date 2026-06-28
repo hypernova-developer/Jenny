@@ -5,7 +5,8 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ## ❇️ Release Notes for **Jenny v5.1.7-LTS**:
 1. Jenny started using a [configurator file](src/jenny.conf) to access the binaries and files needed to run. Paths belong to me will not be burned into executables starting from this release.
-2. This [README.md](README.md) file and [INSTALLATION.md](src/INSTALLATION.md) were edited, cleaned and fixed. Old installation media that belongs to Python era of Jenny is out of [README.md](README.md) now. And configuration settings are at [INSTALLATION.md](src/INSTALLATION.md) now. 
+2. This [README.md](README.md) file and [INSTALLATION.md](src/INSTALLATION.md) were edited, cleaned and fixed. Old installation media that belongs to Python era of Jenny is out of [README.md](README.md) now. And configuration settings are at [INSTALLATION.md](src/INSTALLATION.md) now.
+3. Added [CONFIGURATION.md](src/CONFIGURATION.md) file to describe the process. 
 
 ## 🛠️ Key Features
 - **Hardware Detective:** Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
