@@ -1,9 +1,9 @@
-# Jenny AI CLI 🌑🚀
+# Jenny AI CLI 🌑
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
-- Current Version: **5.1.6-LTS**
+- Current Version: **5.1.7-LTS**
 
-## ❇️ Release Notes for **Jenny v5.1.6-LTS**:
+## ❇️ Release Notes for **Jenny v5.1.7-LTS**:
 1. Jenny started using a [configurator file](src/jenny.conf) to access the binaries and files needed to run. Paths belong to me will not be burned into executables starting from this release.
 2. This [README.md](README.md) file and [INSTALLATION.md](src/INSTALLATION.md) were edited, cleaned and fixed. Old installation media that belongs to Python era of Jenny is out of [README.md](README.md) now. And configuration settings are at [INSTALLATION.md](src/INSTALLATION.md) now. 
 
