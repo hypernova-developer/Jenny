@@ -41,7 +41,7 @@ Read the [manual](src/CONFIGURATION.md) to learn about installation.
 | `jenny --help` | Show the full command list. |
 
 ## 🏛️ Needed Empty Space
-Jenny takes 3.22 megabytes of empty space at [v5.1.8](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.8-LTS) release in my PC alone itself. It might be different on other devices. Only for Jenny, 6 megabytes of empty space will be enough. 
+Jenny takes 3.22 megabytes of empty space at [v5.1.8](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.9-LTS) release in my PC alone itself. It might be different on other devices. Only for Jenny, 6 megabytes of empty space will be enough. 
 
 ## 🛡️ License
 Protected with **GNU General Public License v3.0**.
