@@ -1,9 +1,9 @@
 # Jenny Toolkit CLI 🌑
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
-- Current Version: **5.1.8-LTS**
+- Current Version: **5.1.9-LTS**
 
-## ❇️ Release Notes for **Jenny v5.1.8-LTS**:
+## ❇️ Release Notes for **Jenny v5.1.9-LTS**:
 1. Jenny started using a [configurator file](src/jenny.conf) to access the binaries and files needed to run. Paths belong to me will not be burned into executables starting from [Jenny v5.1.4 Release](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS).
 2. This [README.md](README.md) file and [INSTALLATION.md](src/INSTALLATION.md) were edited, cleaned and fixed. Old installation media that belongs to Python era of Jenny is out of [README.md](README.md) now. And configuration settings are at [INSTALLATION.md](src/INSTALLATION.md) now.
 3. Added [CONFIGURATION.md](src/CONFIGURATION.md) file to describe the process. 
