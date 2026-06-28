@@ -16,19 +16,7 @@ Jenny started using a configurator file to access the binaries and files needed 
 - **Note**: The CompileX module switched from batch processing to C++ technology.
 
 ## 🚀 Installation
-
-1. Clone the repository:
-[https://github.com/hypernova-developer/Jenny.git](https://github.com/hypernova-developer/Jenny.git)
-
-2. Install dependencies:
-```bash
-pip install wmi psutil
-```
-
-3. Add the `jenny.bat` path to your system environment variables.
-
-WARNING: You can also install Jenny with Genesis Installer program in my GitHub or download the zip file from "releases" folder in this repository.
-WARNING-2: I recommend you to install the program from the Releases Page in the repository. Then you can edit your file locations. This will be healthier for both your system and Jenny CLI.
+Read the manual to learn about installation: [INSTALLATION](src/INSTALLATION.md)
 
 ## 💻 Usage
 
