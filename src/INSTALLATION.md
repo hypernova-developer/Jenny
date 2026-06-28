@@ -42,6 +42,9 @@ Define "...\Jenny\src" as an environment variable. After this, jenny.exe file wi
 ## Configurating Jenny
 Jenny uses [a configuration file](jenny.conf) for settings. Nothing will be burned into binaries. If you change settings and paths, you will not need to compile the files again. Before running **Jenny**, be sure that you edited [jenny.conf](jenny.conf). 
 
+## Information About Configurating
+You have to be careful while typing the paths of your own files. The template is given in the file but not descripted. [Here](CONFIGURATION.md) is the description.
+
 ## Thanks
 Thanks for reading this document. Good luck with your own projects.
  > **hypernova-developer**
