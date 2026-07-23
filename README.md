@@ -1,48 +1,69 @@
-# Jenny Toolkit CLI 🌑
+# Jenny Toolkit CLI
 
-Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from your terminal.
-- Current Version: **5.1.9-LTS**
+Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from the terminal interface.
 
-## ❇️ Release Notes for **Jenny v5.1.9-LTS**:
-1. Jenny started using a [configurator file](src/jenny.conf) to access the binaries and files needed to run. Paths belong to me will not be burned into executables starting from [Jenny v5.1.4 Release](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS).
-2. This [README.md](README.md) file and [INSTALLATION.md](src/INSTALLATION.md) were edited, cleaned and fixed. Old installation media that belongs to Python era of Jenny is out of [README.md](README.md) now. And configuration settings are at [INSTALLATION.md](src/INSTALLATION.md) now.
-3. Added [CONFIGURATION.md](src/CONFIGURATION.md) file to describe the process. 
+- **Current Version:** 5.1.9-LTS
 
-## 🛠️ Key Features
-- **Hardware Detective:** Comprehensive system reports (CPU, GPU, RAM, Storage, and Screen Resolution).
-- **Update Manager:** Scan and upgrade applications simultaneously using Winget integration.
-- **Security Vault:** Generate and store cryptographically secure passwords locally.
-- **Zero Latency:** No cloud, no API delays. Everything runs on your machine.
-- **Sentinel Core:** Advanced heuristic and network analysis to detect unsigned processes and suspicious external connections.
-- **CompileX Engine:** A high-performance compilation tool optimized for speed and "pure power," designed for developers seeking efficiency.
-- **Note**: The CompileX module switched from batch processing to C++ technology.
+---
 
-## 🚀 Installation
-Read the [manual](src/INSTALLATION.md) to learn about installation.
+## Release Notes for Jenny v5.1.9-LTS
 
-## 🛞 Configuration
-Read the [manual](src/CONFIGURATION.md) to learn about installation.
+1. **External Configuration Management:** Jenny utilizes a configuration file (`src/jenny.conf`) to resolve binary and file dependencies dynamically. Hardcoded absolute paths have been deprecated as of the [v5.1.4 Release](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS).
+2. **Documentation Restructuring:** The `README.md` and `src/INSTALLATION.md` files have been updated. Legacy deployment instructions from earlier Python-based iterations have been removed from the primary documentation.
+3. **Configuration Manual:** Introduced `src/CONFIGURATION.md` to define specification and setup parameters.
 
-## 💻 Usage
+---
+
+## Core Features
+
+- **Hardware Diagnostic Engine:** Generates comprehensive hardware utilization reports (CPU, GPU, RAM, Storage, and Display Resolution).
+- **Update Management:** Scans and upgrades system applications via native package manager integration (`winget`).
+- **Cryptographic Security Vault:** Generates and stores cryptographically sound access credentials locally.
+- **Local Execution Architecture:** Designed with zero external API dependencies or cloud latency; all routines execute strictly on the local machine.
+- **Sentinel Core:** Performs heuristic process analysis and active network monitoring to identify unsigned binaries and unverified socket connections.
+- **CompileX Engine:** High-performance compilation utility built for aggressive execution speed and operational efficiency.
+  - *Note:* The CompileX module has been migrated from batch execution scripts to a compiled C++ implementation.
+
+---
+
+## Installation
+
+Refer to the [Installation Manual](src/INSTALLATION.md) for full deployment instructions.
+
+---
+
+## Configuration
+
+Refer to the [Configuration Guide](src/CONFIGURATION.md) for system setup and parameter specification.
+
+---
+
+## Command Reference
 
 | Command | Function |
 | :--- | :--- |
-| `jenny --hardware` | Display detailed system and hardware report. |
-| `jenny --software` | Display OS version, build and kernel information. |
-| `jenny --px-e` | (ProtocolX) Encode secure message via external binary. |
-| `jenny --px-d` | (ProtocolX) Decode secure message via external binary. |
-| `jenny --check-updates` | Scan for application and driver updates. |
-| `jenny --upgrade-apps` | Upgrade installed applications via Winget. |
-| `jenny --compile` | **(CompileX)** Compile files using the high-performance engine. |
-| `jenny --sentinel` | **(Sentinel)** Scan current directory for threats. |
-| `jenny --sentinel-network` | **(Sentinel)** Scan active connections for untrusted processes. |
-| `jenny --restore` | Restore files from the Sentinel quarantine. |
-| `jenny --vault` | Generate and store cryptographically secure passwords. |
-| `jenny --help` | Show the full command list. |
+| `jenny --hardware` | Displays detailed system and hardware diagnostic metrics. |
+| `jenny --software` | Displays OS build, versioning, and kernel metadata. |
+| `jenny --px-e` | (ProtocolX) Encodes secure payloads using external binaries. |
+| `jenny --px-d` | (ProtocolX) Decodes secure payloads using external binaries. |
+| `jenny --check-updates` | Scans for application and driver updates. |
+| `jenny --upgrade-apps` | Upgrades installed software packages via Winget. |
+| `jenny --compile` | Executes the high-performance CompileX build system. |
+| `jenny --sentinel` | Runs Sentinel heuristic scans on the current working directory. |
+| `jenny --sentinel-network` | Scans active network connections for unverified process sockets. |
+| `jenny --restore` | Restores isolated files from the Sentinel quarantine vault. |
+| `jenny --vault` | Generates and manages encrypted local credential stores. |
+| `jenny --help` | Displays full CLI option documentation. |
 
-## 🏛️ Needed Empty Space
-Executable files of Jenny take 3.22 megabytes of empty space at release [v5.1.9](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.9-LTS) in my PC alone itself. It might be different on other devices. Only for Jenny, 6 megabytes of empty space will be enough. 
+---
 
-## 🛡️ License
-Protected with **GNU General Public License v3.0**.
-Maintained, preserved, coded, kept up and developed by **hypernova-developer**.
+## System Storage Requirements
+
+The binary executables for Jenny v5.1.9-LTS require approximately **3.22 MB** of local storage space. A minimum allocation of **6.0 MB** is recommended to accommodate local logging and configuration caches.
+
+---
+
+## License
+
+This software is distributed under the **GNU General Public License v3.0**.  
+Maintained and engineered by **hypernova-developer**.
