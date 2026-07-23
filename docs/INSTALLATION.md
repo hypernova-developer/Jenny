@@ -6,7 +6,7 @@ This file is an installation guide for new users. Please do everything mentioned
 Open a new terminal window. Copy and paste the command below:
 
 ```bash
-git clone [https://github.com/hypernova-developer/Jenny.git](https://github.com/hypernova-developer/Jenny.git)
+git clone https://github.com/hypernova-developer/Jenny.git
 
 ```
 
@@ -16,7 +16,7 @@ A compiler is needed for this section. If you do not have one, I highly recommen
 Use the command below to go to the folder where source codes are at:
 
 ```bash
-cd "src/"
+cd "Jenny/src/"
 
 ```
 
