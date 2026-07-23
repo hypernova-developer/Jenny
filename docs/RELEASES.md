@@ -19,3 +19,13 @@ There is not any supported unstable release currently.
 - [Jenny v4.1.1-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.1.1-LTS)
 - [Jenny v4.0.1-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.0.1-LTS)
 
+## Unsupported Releases
+- [Jenny v4.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.0.0-LTS)
+- [Jenny v3.1.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v3.1.0-LTS)
+- [Jenny v3.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v3.0.0-LTS)
+- [Jenny v2.2.2-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v2.2.2-LTS)
+- [Jenny v2.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v2.0.0-LTS)
+
+## Not Released Versions
+Jenny v1.0.0-LTS
+Jenny v0.7.0-BETA
