@@ -6,11 +6,9 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ---
 
-## Release Notes for Jenny v5.1.9-LTS
+## Release Notes for Jenny v6.0.0-BETA
 
-1. **External Configuration Management:** Jenny utilizes a configuration file (`src/jenny.conf`) to resolve binary and file dependencies dynamically. Hardcoded absolute paths have been deprecated as of the [v5.1.4 Release](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS).
-2. **Documentation Restructuring:** The `README.md` and `docs/INSTALLATION.md` files have been updated. Legacy deployment instructions from earlier Python-based iterations have been removed from the primary documentation.
-3. **Configuration Manual:** Introduced `docs/CONFIGURATION.md` to define specification and setup parameters.
+**Simplicity**: Jenny will only require a configuration file in the same directory with the main executable file. This change was made to improve the ease of developing another release that will be compatible with Linux operating systems.
 
 ---
 
