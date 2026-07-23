@@ -6,7 +6,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ---
 
-## Release Notes for Jenny v6.0.0-BETA
+## Release Notes for Jenny v6.0.0-LTS
 
 **Simplicity**: Jenny will only require a configuration file in the same directory with the main executable file. This change was made to improve the ease of developing another release that will be compatible with Linux operating systems.
 
