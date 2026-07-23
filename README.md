@@ -36,6 +36,11 @@ Refer to the [Configuration Guide](docs/CONFIGURATION.md) for system setup and p
 
 ---
 
+## Information About Releases
+Refer to the [Releases Guide](docs/RELEASES.md) for information of all of the releases.
+
+---
+
 ## Command Reference
 
 | Command | Function |
@@ -58,11 +63,11 @@ Refer to the [Configuration Guide](docs/CONFIGURATION.md) for system setup and p
 ## System Storage Requirements
 
 ### Jenny v6.0.0-LTS
-The binary executables for Jenny on the latest release require approximately **1.25 MB** of local storage space. 
+The binary executables for Jenny on the latest release require approximately **1.25 MB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny v5.1.9-LTS
-The binary executables for Jenny on the final supported legacy release require approximately **3.22 MB** of local storage space. 
+The binary executables for Jenny on the final supported legacy release require approximately **3.22 MB** of local storage space.
 A minimum allocation of **6.00 MB** is recommended to accommodate local logging and configuration caches.
 
 ---
