@@ -1,13 +1,13 @@
 ## Goal
 This is a guide for new users want to be informed about the releases for the Jenny Toolkit CLI Project. 
 
-## Unstable Up-to-Date Releases
-There is not any supported unstable release currently. 
-
 ## Latest Stable Release
 [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
 
-## Unsupported BETA Releases
+## Supported Testing Releases
+There is not any supported unstable release currently. 
+
+## Unsupported Testing Releases
 - [Jenny v5.1.8-BETA](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.8-BETA)
 
 ## Supported Releases
