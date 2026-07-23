@@ -5,7 +5,7 @@ This is a guide for new users want to be informed about the releases for the Jen
 There is not any supported unstable release currently. 
 
 ## Latest Stable Release
-The latest release is [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
+[Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
 
 ## Unsupported BETA Releases
 - [Jenny v5.1.8-BETA](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.8-BETA)
