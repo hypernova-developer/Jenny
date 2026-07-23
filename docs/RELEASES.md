@@ -27,5 +27,5 @@ There is not any supported unstable release currently.
 - [Jenny v2.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v2.0.0-LTS)
 
 ## Not Released Versions
-Jenny v1.0.0-LTS
-Jenny v0.7.0-BETA
+- Jenny v1.0.0-LTS
+- Jenny v0.7.0-BETA
