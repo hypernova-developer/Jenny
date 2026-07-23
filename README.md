@@ -37,7 +37,7 @@ Refer to the [Configuration Guide](docs/CONFIGURATION.md) for system setup and p
 ---
 
 ## Information About Releases
-Refer to the [Releases Guide](docs/RELEASES.md) for information of all of the releases.
+Refer to the [Releases Support Policy](docs/RELEASES.md) for information for all the releases.
 
 ---
 
