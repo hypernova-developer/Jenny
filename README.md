@@ -2,13 +2,13 @@
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from the terminal interface.
 
-- **Current Version:** 6.0.0-LTS
+- **Current Version:** 7.0.0-BETA
 
 ---
 
-## Release Notes for Jenny v6.0.0-LTS
+## Release Notes for Jenny v7.0.0-BETA
 
-**Simplicity**: Jenny will only require a configuration file in the same directory with the main executable file. This change was made to improve the ease of developing another release that will be compatible with Linux operating systems.
+**Compatibility**: Jenny is compatible with Linux distributions starting from this release. The features will be more compatible in time with the next long-term support release. 
 
 ---
 
@@ -61,6 +61,10 @@ Refer to the [Releases Support Policy](docs/RELEASES.md) for information for all
 ---
 
 ## System Storage Requirements
+
+### Jenny v7.0.0-BETA
+The binary executables for Jenny on the latest release require approximately **1.24 MB** of local storage space.
+A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny v6.0.0-LTS
 The binary executables for Jenny on the latest release require approximately **1.25 MB** of local storage space.
