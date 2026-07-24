@@ -8,6 +8,7 @@ This is a guide for new users want to be informed about the releases for the Jen
 [Jenny v7.0.0-BETA](https://github.com/hypernova-developer/Jenny/releases/tag/v7.0.0-BETA)
 
 ## Supported Stable Releases
+- [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
 - [Jenny v5.1.9-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.9-LTS)
 
 ## Supported Legacy Releases
