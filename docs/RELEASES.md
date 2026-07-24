@@ -1,5 +1,5 @@
 ## Goal
-This is a guide for new users want to be informed about the releases for the Jenny Toolkit CLI Project. 
+This is a guide for new users seeking information about the releases for the Jenny Toolkit CLI Project. 
 
 ## Latest Stable Release
 [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
