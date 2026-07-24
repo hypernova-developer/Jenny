@@ -5,7 +5,7 @@ This is a guide for new users want to be informed about the releases for the Jen
 [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS).
 
 ## Supported Testing Releases
-There is not any supported unstable release currently. 
+There is not any supported testing release currently. 
 
 ## Unsupported Testing Releases
 - [Jenny v5.1.8-BETA](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.8-BETA)
