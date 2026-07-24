@@ -12,6 +12,10 @@
 #include <algorithm>
 #include <chrono>
 #include <ctime>
+#include <cstring>
+#include <sstream>
+
+#ifdef _WIN32
 #include <windows.h>
 #include <comutil.h>
 #include <WbemIdl.h>
@@ -25,6 +29,13 @@
 #pragma comment(lib, "wintrust.lib")
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "bcrypt.lib")
+#else
+#include <unistd.h>
+#include <sys/sysinfo.h>
+#include <sys/stat.h>
+#include <sys/utsname.h>
+#include <pwd.h>
+#endif
 
 namespace fs = std::filesystem;
 
@@ -36,6 +47,7 @@ namespace JennyModules
         std::string driver;
     };
 
+#ifdef _WIN32
     class HardwareDetective
     {
     public:
@@ -100,15 +112,15 @@ namespace JennyModules
             HRESULT hres;
             hres = CoInitializeEx(0, COINIT_MULTITHREADED);
             hres = CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
-            
+
             IWbemLocator* pLoc = NULL;
             hres = CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator, (LPVOID*)&pLoc);
-            
+
             IWbemServices* pSvc = NULL;
             BSTR resource = SysAllocString(L"ROOT\\CIMV2");
             hres = pLoc->ConnectServer(resource, NULL, NULL, 0, 0, 0, 0, &pSvc);
             SysFreeString(resource);
-            
+
             IEnumWbemClassObject* pEnumerator = NULL;
             std::wstring query = L"SELECT " + field + L" FROM " + table;
             BSTR wql = SysAllocString(L"WQL");
@@ -116,7 +128,7 @@ namespace JennyModules
             hres = pSvc->ExecQuery(wql, q, WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
             SysFreeString(wql);
             SysFreeString(q);
-            
+
             IWbemClassObject* pclsObj = NULL;
             ULONG uReturn = 0;
             std::string result = "Unknown";
@@ -140,6 +152,115 @@ namespace JennyModules
             return result;
         }
     };
+#else
+    class HardwareDetective
+    {
+    public:
+        std::string getMotherboard()
+        {
+            std::string result = "Unknown";
+            FILE* pipe = popen("cat /sys/class/dmi/id/board_vendor 2>/dev/null", "r");
+            if (pipe)
+            {
+                char buf[128];
+                if (fgets(buf, 128, pipe))
+                {
+                    result = std::string(buf);
+                    result.erase(std::remove(result.begin(), result.end(), '\n'), result.end());
+                }
+                pclose(pipe);
+            }
+            std::string product = "Unknown";
+            FILE* pipe2 = popen("cat /sys/class/dmi/id/board_name 2>/dev/null", "r");
+            if (pipe2)
+            {
+                char buf[128];
+                if (fgets(buf, 128, pipe2))
+                {
+                    product = std::string(buf);
+                    product.erase(std::remove(product.begin(), product.end(), '\n'), product.end());
+                }
+                pclose(pipe2);
+            }
+            return result + " " + product;
+        }
+
+        std::string getRAM()
+        {
+            struct sysinfo si;
+            if (sysinfo(&si) == 0)
+            {
+                double totalRAM = (double)si.totalram * si.mem_unit / (1024 * 1024 * 1024);
+                return std::to_string(totalRAM).substr(0, 5) + " GB";
+            }
+            return "Unknown";
+        }
+
+        std::string getResolution()
+        {
+            std::string result = "Unknown";
+            FILE* pipe = popen("xdpyinfo 2>/dev/null | grep dimensions | awk '{print $2}'", "r");
+            if (!pipe)
+            {
+                pipe = popen("xrandr 2>/dev/null | grep '*' | head -1 | awk '{print $1}'", "r");
+            }
+            if (pipe)
+            {
+                char buf[128];
+                if (fgets(buf, 128, pipe))
+                {
+                    result = std::string(buf);
+                    result.erase(std::remove(result.begin(), result.end(), '\n'), result.end());
+                }
+                pclose(pipe);
+            }
+            return result;
+        }
+
+        std::vector<GPUInfo> getGPUs()
+        {
+            std::vector<GPUInfo> gpus;
+            FILE* pipe = popen("lspci 2>/dev/null | grep -i vga | head -1 | sed 's/.*: //'", "r");
+            if (pipe)
+            {
+                char buf[256];
+                if (fgets(buf, 256, pipe))
+                {
+                    std::string name(buf);
+                    name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
+                    gpus.push_back({name, "N/A"});
+                }
+                pclose(pipe);
+            }
+            if (gpus.empty())
+            {
+                gpus.push_back({"Unknown GPU", "N/A"});
+            }
+            return gpus;
+        }
+
+        std::string getStorage()
+        {
+            std::string storageStr = "";
+            FILE* pipe = popen("df -h --output=target,size 2>/dev/null | tail -n +2", "r");
+            if (pipe)
+            {
+                char buf[256];
+                while (fgets(buf, 256, pipe))
+                {
+                    std::string line(buf);
+                    line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
+                    if (!line.empty())
+                    {
+                        storageStr += line + " | ";
+                    }
+                }
+                pclose(pipe);
+            }
+            return storageStr;
+        }
+    };
+#endif
 
     class JennyVault
     {
@@ -174,15 +295,34 @@ namespace JennyModules
 
     class ProtocolX
     {
+    private:
+        static const std::string base64Chars;
+
+        std::string encodeBlock(unsigned char a, unsigned char b, unsigned char c, int len)
+        {
+            unsigned char block[3] = {a, b, c};
+            std::string result;
+            result += base64Chars[(block[0] & 0xFC) >> 2];
+            result += base64Chars[((block[0] & 0x03) << 4) | ((block[1] & 0xF0) >> 4)];
+            result += (len > 1) ? base64Chars[((block[1] & 0x0F) << 2) | ((block[2] & 0xC0) >> 6)] : '=';
+            result += (len > 2) ? base64Chars[block[2] & 0x3F] : '=';
+            return result;
+        }
+
     public:
         std::string encode(std::string t)
         {
             std::string r = "";
-            for (unsigned char c : t)
+            size_t i = 0;
+            size_t len = t.length();
+            while (i < len)
             {
-                std::string s = std::to_string((int)c);
-                while (s.length() < 4) s += 'X';
-                r += s;
+                unsigned char a = (unsigned char)t[i];
+                unsigned char b = (i + 1 < len) ? (unsigned char)t[i + 1] : 0;
+                unsigned char c = (i + 2 < len) ? (unsigned char)t[i + 2] : 0;
+                int remaining = (len - i >= 3) ? 3 : (len - i);
+                r += encodeBlock(a, b, c, remaining);
+                i += 3;
             }
             return r;
         }
@@ -190,16 +330,54 @@ namespace JennyModules
         std::string decode(std::string d)
         {
             std::string r = "";
-            for (size_t i = 0; i < d.length(); i += 4)
+            size_t len = d.length();
+            if (len % 4 != 0) return "";
+
+            auto charIndex = [&](char c) -> int
             {
-                std::string b = d.substr(i, 4);
-                std::string n = "";
-                for (char c : b) if (isdigit(c)) n += c;
-                if (!n.empty()) r += (char)std::stoi(n);
+                if (c >= 'A' && c <= 'Z') return c - 'A';
+                if (c >= 'a' && c <= 'z') return c - 'a' + 26;
+                if (c >= '0' && c <= '9') return c - '0' + 52;
+                if (c == '+') return 62;
+                if (c == '/') return 63;
+                return -1;
+            };
+
+            for (size_t i = 0; i < len; i += 4)
+            {
+                int indices[4];
+                bool padded = false;
+                for (int j = 0; j < 4; j++)
+                {
+                    if (i + j < len && d[i + j] == '=')
+                    {
+                        indices[j] = 0;
+                        padded = true;
+                    }
+                    else if (i + j < len)
+                    {
+                        indices[j] = charIndex(d[i + j]);
+                    }
+                    else
+                    {
+                        indices[j] = 0;
+                        padded = true;
+                    }
+                }
+
+                unsigned char a = (indices[0] << 2) | ((indices[1] & 0x30) >> 4);
+                unsigned char b = ((indices[1] & 0x0F) << 4) | ((indices[2] & 0x3C) >> 2);
+                unsigned char c = ((indices[2] & 0x03) << 6) | indices[3];
+
+                r += (char)a;
+                if (!padded || (i + 2 < len && d[i + 2] != '=')) r += (char)b;
+                if (!padded || (i + 3 < len && d[i + 3] != '=')) r += (char)c;
             }
             return r;
         }
     };
+
+    const std::string ProtocolX::base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     namespace Sentinel
     {
@@ -221,7 +399,11 @@ namespace JennyModules
 
         inline std::vector<std::string> developerWorkspaces =
         {
+#ifdef _WIN32
             "D:\\Tools", "D:\\mingw64", "C:\\msys64", "D:\\Developing"
+#else
+            "/opt", "/usr/local", "/home", "/mnt"
+#endif
         };
 
         inline std::vector<std::string> driverWhitelist =
@@ -256,10 +438,15 @@ namespace JennyModules
             }
             if (quarantineDir.empty())
             {
+#ifdef _WIN32
                 quarantineDir = "C:\\Tools\\Jenny\\Quarantine";
+#else
+                quarantineDir = "/var/jenny/quarantine";
+#endif
             }
         }
 
+#ifdef _WIN32
         inline std::string GetFileHash(std::string filename)
         {
             BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -303,7 +490,25 @@ namespace JennyModules
 
             return hashStr;
         }
+#else
+        inline std::string GetFileHash(std::string filename)
+        {
+            std::string cmd = "sha256sum \"" + filename + "\" 2>/dev/null | cut -d' ' -f1";
+            FILE* pipe = popen(cmd.c_str(), "r");
+            if (!pipe) return "error";
+            char buf[65];
+            std::string result = "";
+            if (fgets(buf, 65, pipe))
+            {
+                result = std::string(buf);
+                result.erase(std::remove(result.begin(), result.end(), '\n'), result.end());
+            }
+            pclose(pipe);
+            return result.empty() ? "error" : result;
+        }
+#endif
 
+#ifdef _WIN32
         inline bool IsFileSigned(std::string path)
         {
             std::wstring wpath(path.begin(), path.end());
@@ -324,6 +529,13 @@ namespace JennyModules
             LONG result = WinVerifyTrust(NULL, &actionID, &wtData);
             return result == ERROR_SUCCESS;
         }
+#else
+        inline bool IsFileSigned(std::string path)
+        {
+            (void)path;
+            return false;
+        }
+#endif
 
         inline bool IsHardwareDriver(std::string path)
         {
@@ -334,7 +546,9 @@ namespace JennyModules
 
             for (const auto& d : driverWhitelist)
             {
-                if (fileName.find(d) != std::string::npos || pathLower.find("\\pusat\\") != std::string::npos || pathLower.find("\\peripheral\\") != std::string::npos)
+                if (fileName.find(d) != std::string::npos ||
+                    pathLower.find("\\pusat\\") != std::string::npos ||
+                    pathLower.find("\\peripheral\\") != std::string::npos)
                 {
                     return true;
                 }
@@ -342,6 +556,7 @@ namespace JennyModules
             return false;
         }
 
+#ifdef _WIN32
         inline bool CheckStartupStatus(std::string path)
         {
             auto checkRegistry = [&](HKEY hRoot, const char* subKey)
@@ -375,6 +590,51 @@ namespace JennyModules
             return checkRegistry(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run") ||
                    checkRegistry(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Run");
         }
+#else
+        inline bool CheckStartupStatus(std::string path)
+        {
+            std::string pathLower = path;
+            std::transform(pathLower.begin(), pathLower.end(), pathLower.begin(), ::tolower);
+
+            std::vector<std::string> autostartDirs =
+            {
+                std::string(getenv("HOME")) + "/.config/autostart",
+                "/etc/xdg/autostart"
+            };
+
+            for (const auto& dir : autostartDirs)
+            {
+                try
+                {
+                    for (auto& p : fs::directory_iterator(dir))
+                    {
+                        if (p.path().extension() == ".desktop")
+                        {
+                            std::ifstream df(p.path());
+                            std::string line;
+                            while (std::getline(df, line))
+                            {
+                                std::string lineLower = line;
+                                std::transform(lineLower.begin(), lineLower.end(), lineLower.begin(), ::tolower);
+                                if (lineLower.find(pathLower) != std::string::npos)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (...)
+                {
+                }
+            }
+
+            std::string cmd = "crontab -l 2>/dev/null | grep -i \"" + path + "\"";
+            if (system(cmd.c_str()) == 0) return true;
+
+            return false;
+        }
+#endif
 
         inline bool IsSimilar(std::string s1, std::string s2)
         {
@@ -390,8 +650,8 @@ namespace JennyModules
             try
             {
                 std::string fileName = fs::path(sourcePath).filename().string();
-                std::string destPath = quarantineDir + "\\" + fileName + ".jny_locked";
-                std::string mapPath = quarantineDir + "\\" + fileName + ".map";
+                std::string destPath = quarantineDir + "/" + fileName + ".jny_locked";
+                std::string mapPath = quarantineDir + "/" + fileName + ".map";
                 if (fs::exists(sourcePath))
                 {
                     std::ofstream mapFile(mapPath);
@@ -400,7 +660,9 @@ namespace JennyModules
                     fs::rename(sourcePath, destPath);
                 }
             }
-            catch (...) {}
+            catch (...)
+            {
+            }
         }
 
         inline void RestoreQuarantine()
@@ -425,11 +687,14 @@ namespace JennyModules
                             fs::remove(p.path());
                         }
                     }
-                    catch (...) {}
+                    catch (...)
+                    {
+                    }
                 }
             }
         }
 
+#ifdef _WIN32
         inline void ScanNetworkActivity()
         {
             std::cout << "\n[SENTINEL NETWORK] Analyzing Unsigned & External Connections..." << std::endl;
@@ -493,6 +758,61 @@ namespace JennyModules
             free(pTcpTable);
             ReportAndHandleThreats();
         }
+#else
+        inline void ScanNetworkActivity()
+        {
+            std::cout << "\n[SENTINEL NETWORK] Analyzing Network Connections..." << std::endl;
+            std::ifstream tcpFile("/proc/net/tcp");
+            if (!tcpFile)
+            {
+                std::cout << "[SENTINEL] Unable to read /proc/net/tcp" << std::endl;
+                return;
+            }
+
+            std::string line;
+            std::getline(tcpFile, line);
+
+            while (std::getline(tcpFile, line))
+            {
+                std::istringstream iss(line);
+                std::string slot, localAddr, remAddr, state;
+                iss >> slot >> localAddr >> remAddr >> state;
+
+                if (state == "01")
+                {
+                    std::string pidStr;
+                    size_t lastSpace = line.find_last_of(' ');
+                    if (lastSpace != std::string::npos)
+                    {
+                        pidStr = line.substr(lastSpace + 1);
+                    }
+
+                    if (!pidStr.empty() && pidStr != "0")
+                    {
+                        int pid = std::stoi(pidStr);
+                        std::string procPath = "/proc/" + pidStr + "/exe";
+                        char exeBuf[1024];
+                        ssize_t exeLen = readlink(procPath.c_str(), exeBuf, sizeof(exeBuf) - 1);
+                        if (exeLen != -1)
+                        {
+                            exeBuf[exeLen] = '\0';
+                            std::string exePath(exeBuf);
+
+                            if (!IsHardwareDriver(exePath) && GetFileHash(exePath) != currentSelfHash)
+                            {
+                                if (detectedThreats.find(exePath) == detectedThreats.end())
+                                {
+                                    detectedThreats[exePath] = { 80, {"Process with active network connection"} };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            tcpFile.close();
+            ReportAndHandleThreats();
+        }
+#endif
 
         inline int AnalyzeFile(std::string fullPath, std::vector<std::string>& reasons)
         {
@@ -505,7 +825,11 @@ namespace JennyModules
 
             bool isSigned = IsFileSigned(fullPath);
             bool isStartup = CheckStartupStatus(fullPath);
+#ifdef _WIN32
             bool isTrusted = pathLower.find("\\windowsapps\\") != std::string::npos || pathLower.find("\\microsoft\\winget\\") != std::string::npos;
+#else
+            bool isTrusted = pathLower.find("/usr/bin") == 0 || pathLower.find("/bin/") == 0 || pathLower.find("/snap/") == 0;
+#endif
 
             if (!isSigned)
             {
@@ -540,7 +864,11 @@ namespace JennyModules
 
             for (const auto& service : criticalServices)
             {
+#ifdef _WIN32
                 if (fileName == service && pathLower.find("c:\\windows\\system32") == std::string::npos)
+#else
+                if (fileName == service && pathLower.find("/usr/lib") == std::string::npos && pathLower.find("/lib") == std::string::npos)
+#endif
                 {
                     threatScore += 70;
                     reasons.push_back("Location Anomaly: " + service + " masquerading");
@@ -558,7 +886,11 @@ namespace JennyModules
         {
             std::string pathLower = root;
             std::transform(pathLower.begin(), pathLower.end(), pathLower.begin(), ::tolower);
+#ifdef _WIN32
             if (pathLower.find("c:\\windows") != std::string::npos || pathLower.find("winsxs") != std::string::npos) return;
+#else
+            if (pathLower.find("/sys") == 0 || pathLower.find("/proc") == 0 || pathLower.find("/dev") == 0) return;
+#endif
 
             try
             {
@@ -568,19 +900,28 @@ namespace JennyModules
                     {
                         ScanDirectoryRecursively(p.path().string());
                     }
-                    else if (p.path().extension() == ".exe")
+                    else
                     {
-                        if (GetFileHash(p.path().string()) == currentSelfHash) continue;
-                        std::vector<std::string> reasons;
-                        int score = AnalyzeFile(p.path().string(), reasons);
-                        if (score >= 40)
+#ifdef _WIN32
+                        if (p.path().extension() == ".exe")
+#else
+                        if (p.path().extension() == ".elf" || p.path().extension() == "" || (fs::status(p.path()).permissions() & (fs::perms::owner_exec | fs::perms::group_exec | fs::perms::others_exec)) != fs::perms::none)
+#endif
                         {
-                            detectedThreats[p.path().string()] = { std::min(score, 100), reasons };
+                            if (GetFileHash(p.path().string()) == currentSelfHash) continue;
+                            std::vector<std::string> reasons;
+                            int score = AnalyzeFile(p.path().string(), reasons);
+                            if (score >= 40)
+                            {
+                                detectedThreats[p.path().string()] = { std::min(score, 100), reasons };
+                            }
                         }
                     }
                 }
             }
-            catch (...) {}
+            catch (...)
+            {
+            }
         }
 
         inline void ReportAndHandleThreats()
@@ -649,7 +990,11 @@ namespace JennyModules
                 std::ofstream log_file("compilex_history.log", std::ios::app);
                 auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
                 char buf[26];
+#ifdef _WIN32
                 ctime_s(buf, sizeof(buf), &now);
+#else
+                ctime_r(&now, buf);
+#endif
                 std::string ts(buf);
                 ts.pop_back();
                 log_file << "[" << ts << "] " << message << std::endl;
@@ -666,7 +1011,7 @@ namespace JennyModules
                 return;
             }
 
-            fs::path source_path = fs::path(reinterpret_cast<const char8_t*>(arg1.c_str()));
+            fs::path source_path = fs::path(arg1);
 
             if (!fs::exists(source_path))
             {
@@ -675,14 +1020,22 @@ namespace JennyModules
             }
 
             std::string ext = source_path.extension().string();
+#ifdef _WIN32
             std::string exe_name = source_path.stem().string() + ".exe";
+#else
+            std::string exe_name = source_path.stem().string();
+#endif
             std::string cmd = "";
             std::string lang = "";
 
             if (ext == ".cpp")
             {
                 lang = "C++";
+#ifdef _WIN32
                 cmd = "\"\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lopengl32 -lgdi32 -lwinmm\"";
+#else
+                cmd = "\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lGL -lm -lpthread -ldl -lrt -lX11\"";
+#endif
             }
             else if (ext == ".c")
             {
@@ -703,7 +1056,7 @@ namespace JennyModules
             {
                 std::cout << "[CompileX] Executing " << arg1 << " (Python)..." << std::endl;
                 std::cout << "---------------------------------------------------" << std::endl;
-                int py_res = system(std::string("\"\"" + cfg.python + "\" \"" + arg1 + "\"\"").c_str());
+                system(std::string("\"\"" + cfg.python + "\" \"" + arg1 + "\"\"").c_str());
                 std::cout << "---------------------------------------------------" << std::endl;
                 log_operation("Executed " + arg1 + " (Python)");
                 return;
@@ -716,12 +1069,12 @@ namespace JennyModules
             {
                 std::cout << "---------------------------------------------------" << std::endl;
                 std::cout << "[CompileX] Success: Build complete." << std::endl;
-                
+
                 std::ofstream built_list(".compilex_built", std::ios::app);
                 built_list << exe_name << "\n";
-                
+
                 log_operation("Compiled " + exe_name + " (" + lang + ")");
-                
+
                 std::cout << "[CompileX] Executing binary..." << std::endl;
                 std::cout << "---------------------------------------------------" << std::endl;
                 system(std::string("\"" + exe_name + "\"").c_str());
@@ -769,6 +1122,7 @@ ConfigMain loadConfigMain()
     return cfg;
 }
 
+#ifdef _WIN32
 std::string getProcessorName()
 {
     char buffer[128];
@@ -777,7 +1131,7 @@ std::string getProcessorName()
     if (!pipe) return "Unknown Processor";
     while (fgets(buffer, 128, pipe) != NULL) result += buffer;
     _pclose(pipe);
-    
+
     size_t pos = result.find('\n');
     if (pos != std::string::npos)
     {
@@ -788,29 +1142,48 @@ std::string getProcessorName()
     }
     return "Unknown Processor";
 }
+#else
+std::string getProcessorName()
+{
+    std::string result = "Unknown Processor";
+    FILE* pipe = popen("cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d: -f2 | sed 's/^ *//'", "r");
+    if (pipe)
+    {
+        char buf[128];
+        if (fgets(buf, 128, pipe))
+        {
+            result = std::string(buf);
+            result.erase(std::remove(result.begin(), result.end(), '\n'), result.end());
+        }
+        pclose(pipe);
+    }
+    return result;
+}
+#endif
 
+#ifdef _WIN32
 std::string getSoftwareInfo()
 {
     char buffer[128];
     std::string osName = "Unknown Windows";
-    
+
     FILE* pipe = _popen("wmic os get Caption", "r");
     if (pipe)
     {
         std::string wmicOutput = "";
         while (fgets(buffer, 128, pipe) != NULL) wmicOutput += buffer;
         _pclose(pipe);
-        
+
         size_t pos = wmicOutput.find('\n');
         if (pos != std::string::npos)
         {
             osName = wmicOutput.substr(pos + 1);
         }
     }
-    
+
     osName.erase(std::remove(osName.begin(), osName.end(), '\n'), osName.end());
     osName.erase(std::remove(osName.begin(), osName.end(), '\r'), osName.end());
-    while(!osName.empty() && osName.back() == ' ') osName.pop_back();
+    while (!osName.empty() && osName.back() == ' ') osName.pop_back();
 
     std::string build = "Unknown";
     FILE* pipeBuild = _popen("powershell (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').CurrentBuild", "r");
@@ -819,12 +1192,49 @@ std::string getSoftwareInfo()
         if (fgets(buffer, 128, pipeBuild) != NULL) build = buffer;
         _pclose(pipeBuild);
     }
-    
+
     build.erase(std::remove(build.begin(), build.end(), '\n'), build.end());
     build.erase(std::remove(build.begin(), build.end(), '\r'), build.end());
 
     return osName + " (Build " + build + ")";
 }
+#else
+std::string getSoftwareInfo()
+{
+    std::string osName = "Unknown Linux";
+    std::string prettyName = "";
+    std::ifstream osRelease("/etc/os-release");
+    if (osRelease.is_open())
+    {
+        std::string line;
+        while (std::getline(osRelease, line))
+        {
+            if (line.find("PRETTY_NAME=") == 0)
+            {
+                prettyName = line.substr(12);
+                if (prettyName.front() == '"' && prettyName.back() == '"')
+                {
+                    prettyName = prettyName.substr(1, prettyName.length() - 2);
+                }
+            }
+        }
+        osRelease.close();
+    }
+
+    struct utsname unameData;
+    if (uname(&unameData) == 0)
+    {
+        osName = prettyName.empty() ? unameData.sysname : prettyName;
+        osName += " (Kernel " + std::string(unameData.release) + ")";
+    }
+    else if (!prettyName.empty())
+    {
+        osName = prettyName;
+    }
+
+    return osName;
+}
+#endif
 
 void runExternal(std::string exeName, std::string args)
 {
@@ -834,7 +1244,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v6.0.0-LTS";
+    std::string version = "v7.0.0-BETA";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
@@ -884,13 +1294,29 @@ int main(int argc, char* argv[])
     }
     else if (command == "--check-updates")
     {
+#ifdef _WIN32
         std::cout << "\n[*] Scanning for updates via Winget..." << std::endl;
         system("winget upgrade");
+#else
+        std::cout << "\n[*] Checking for system updates..." << std::endl;
+        system("apt list --upgradable 2>/dev/null || yum check-update 2>/dev/null || dnf check-update 2>/dev/null || echo 'Update command not available'");
+#endif
     }
     else if (command == "--upgrade-apps")
     {
+#ifdef _WIN32
         if (argc > 2) system(("winget upgrade --id " + std::string(argv[2])).c_str());
         else system("winget upgrade --all");
+#else
+        if (argc > 2)
+        {
+            system(("apt-get install --only-upgrade -y " + std::string(argv[2]) + " 2>/dev/null || yum update -y " + std::string(argv[2]) + " 2>/dev/null || dnf update -y " + std::string(argv[2]) + " 2>/dev/null").c_str());
+        }
+        else
+        {
+            system("apt-get upgrade -y 2>/dev/null || yum update -y 2>/dev/null || dnf upgrade -y 2>/dev/null || echo 'Update command not available'");
+        }
+#endif
     }
     else if (command == "--compile" && argc > 2)
     {
@@ -900,8 +1326,15 @@ int main(int argc, char* argv[])
     else if (command == "--sentinel")
     {
         JennyModules::Sentinel::loadQuarantineConfig();
+#ifdef _WIN32
         char selfPath[MAX_PATH];
         GetModuleFileNameA(NULL, selfPath, MAX_PATH);
+#else
+        char selfPath[1024];
+        ssize_t len = readlink("/proc/self/exe", selfPath, sizeof(selfPath) - 1);
+        if (len != -1) selfPath[len] = '\0';
+        else std::strcpy(selfPath, "./jenny");
+#endif
         JennyModules::Sentinel::currentSelfHash = JennyModules::Sentinel::GetFileHash(selfPath);
 
         if (!fs::exists(JennyModules::Sentinel::quarantineDir)) fs::create_directories(JennyModules::Sentinel::quarantineDir);
@@ -919,8 +1352,15 @@ int main(int argc, char* argv[])
     else if (command == "--sentinel-network")
     {
         JennyModules::Sentinel::loadQuarantineConfig();
+#ifdef _WIN32
         char selfPath[MAX_PATH];
         GetModuleFileNameA(NULL, selfPath, MAX_PATH);
+#else
+        char selfPath[1024];
+        ssize_t len = readlink("/proc/self/exe", selfPath, sizeof(selfPath) - 1);
+        if (len != -1) selfPath[len] = '\0';
+        else std::strcpy(selfPath, "./jenny");
+#endif
         JennyModules::Sentinel::currentSelfHash = JennyModules::Sentinel::GetFileHash(selfPath);
         JennyModules::Sentinel::ScanNetworkActivity();
     }
