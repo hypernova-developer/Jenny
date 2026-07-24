@@ -8,7 +8,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ## Release Notes for Jenny v7.0.0-BETA
 
-**Compatibility**: Jenny is compatible with Linux distributions starting from this release. The features will be more compatible in time with the next long-term support release. 
+**Compatibility**: Jenny is compatible with Linux distributions starting from this release. The features on the Linux side will be less problematic in time with the next long-term support release. 
 
 ---
 
