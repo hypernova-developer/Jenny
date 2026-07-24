@@ -25,7 +25,7 @@ This is a guide for new users want to be informed about the releases for the Jen
 - [Jenny v2.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v2.0.0-LTS)
 
 ## Supported Testing Releases
-There is not any supported testing release currently. 
+[Jenny v7.0.0-BETA](https://github.com/hypernova-developer/Jenny/releases/tag/v7.0.0-BETA)
 
 ## Not Released Versions
 - Jenny v1.0.0-LTS
