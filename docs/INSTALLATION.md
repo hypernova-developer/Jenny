@@ -25,7 +25,7 @@ cd "Jenny/src/"
 All modules have been unified into a single core architecture. Before this section, be sure that you added your compiler as an environment variable. If everything is alright, you can use the command below to compile the final binary:
 
 ```bash
-g++ .\jenny.cpp -o jenny.exe -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -lole32 -loleaut32 -lwbemuuid -lwintrust -lbcrypt -liphlpapi -static -march=native
+g++ .\jenny.cpp -o jenny.exe -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -lole32 -loleaut32 -lwbemuuid -lwintrust -lbcrypt -liphlpapi -march=native
 
 ```
 
