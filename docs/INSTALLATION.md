@@ -46,5 +46,3 @@ You have to be careful while typing the paths of your own files. The template is
 Thanks for reading this document. Good luck with your own projects.
 
 > **hypernova-developer**
-
-```
