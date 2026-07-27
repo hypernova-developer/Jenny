@@ -21,3 +21,7 @@ This document is prepared to make the next changes visible for all of the people
 - The Jenny Toolkit CLI project will switch back to the modular layout at least for the new modules. The integrated old modules will not be separated again from the main code.
 - This will make it easier to integrate a project like Mahoraga which took more than 3100 lines of code to Jenny.
 - This benefit will make Jenny become a lot wider toolkit including almost all of the other tools made by `hypernova-developer`. 
+
+## v10.x.x-LTS
+- This release is going to be the milestone for the Jenny ecosystem.
+- Jenny will be able to get extended areas of use. Jenny will be able to run almost all of the tools that can even be coded by another maintainer. 
