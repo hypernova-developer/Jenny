@@ -1,1 +1,12 @@
+## Goal
+This document is prepared to make the next changes visible for all of the people and the lonely developer. 
 
+## v7.x.x-LTS
+- The Linux compatibility feature from v7.0.0-BETA will be fully available and ready to use without bugs or issues. 
+- The package manager accessibility feature will be removed completely. 
+
+## v8.x.x-LTS
+- Starting from this release, the [Dawn Package Manager](https://github.com/DawnPackageSystem/dawn) will be integrated to Jenny. 
+- The `winget` and `apt`/`dnf`/`pacman`/etc. support will be removed after Dawn Package Manager works stable as a module of Jenny.
+
+## NOTICE: 
