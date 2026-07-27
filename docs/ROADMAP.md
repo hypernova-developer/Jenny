@@ -16,3 +16,4 @@ This document is prepared to make the next changes visible for all of the people
 
 ## v9.x.x-LTS
 NOTICE: The plans for this release are not definite. They might change in time. 
+- The Jenny Toolkit CLI project will switch back to the modular layout. 
