@@ -10,4 +10,7 @@ This document is prepared to make the next changes visible for all of the people
 - The `winget` and `apt`/`dnf`/`pacman`/etc. support will be removed before Dawn Package Manager works stable as a module of Jenny.
 
 ## NOTICE: 
-- v7.x.x-LTS version of Jenny will not have a quite long support time unlike v5.1.9-LTS. The lack of the package manager access 
+- v7.x.x-LTS version of Jenny will not have a quite long support time unlike v5.1.9-LTS. The lack of the package manager access feature will be a negative part of the next long-term support release.
+- Another reason for the package manager access
+
+## v9.x.x-LTS
