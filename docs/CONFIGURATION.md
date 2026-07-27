@@ -49,5 +49,13 @@ But do NOT delete a line. You can just leave he line empty but every line has to
 
 - Windows:
 ```conf
-
+D:\mingw64\bin\gcc.exe
+D:\mingw64\bin\g++.exe
+C:\mingw64\bin\gfortran.exe
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe
+C:\Users\User\AppData\\Local\Programs\Python\Python312\python.exe
+D:\Developing\hypernova-developer\SyntaX\Fortran
+D:\Libraries\Raylib\include
+D:\Libraries\Raylib\lib
+D:\Tools\Jenny\Quarantine
 ```
