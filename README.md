@@ -77,7 +77,7 @@ The Windows binary executable for Jenny on the latest release require approximat
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny v5.1.9-LTS
-The Windows binary executables for Jenny on the final supported legacy release require approximately **3.22 MB** of local storage space.
+The Windows binary executable(s) for Jenny on the final supported legacy release require approximately **3.22 MB** of local storage space.
 A minimum allocation of **6.00 MB** is recommended to accommodate local logging and configuration caches.
 
 ---
