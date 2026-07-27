@@ -28,3 +28,7 @@ This document is prepared to make the next changes visible for all of the people
 
 ### The Configuration Files
 The configuration files will include some of the main keywords of programs. 
+- The Title of the Binary File
+- The Path of the Binary File
+- The Parameters that the Binary File Can Get
+- The Configuration files that the Binary File Needs
