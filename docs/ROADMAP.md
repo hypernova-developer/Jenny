@@ -24,4 +24,4 @@ This document is prepared to make the next changes visible for all of the people
 
 ## v10.x.x-LTS
 - This release is going to be the milestone for the Jenny ecosystem.
-- Jenny will be able to get extended areas of use. Jenny will be able to run almost all of the tools that can even be coded by another maintainer. 
+- Jenny will be able to get extended areas of use. Jenny will be able to run almost all of the tools that can even be coded by another maintainer using configuration files. 
