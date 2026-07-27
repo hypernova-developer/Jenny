@@ -37,7 +37,12 @@ Refer to the [Configuration Guide](docs/CONFIGURATION.md) for system setup and p
 ---
 
 ## Information About Releases
-Refer to the [Releases Support Policy](docs/RELEASES.md) for information for all the releases.
+Refer to the [Releases Support Policy](docs/RELEASES.md) for information for all of the releases.
+
+---
+
+## Information About the Roadmap of Jenny Toolkit CLI Project
+Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the releases.
 
 ---
 
