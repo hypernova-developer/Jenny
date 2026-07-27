@@ -15,3 +15,4 @@ This document is prepared to make the next changes visible for all of the people
 - Also, the integration of Dawn Package Manager will increase the UX of the Jenny ecosystem. The philosophy of Jenny is to combine all of the tools made by `hypernova-developer` and make them accessible from one tool but only different commands. 
 
 ## v9.x.x-LTS
+NOTICE: The plans for this release are not definite. They might change in time. 
