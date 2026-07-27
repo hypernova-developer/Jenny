@@ -34,3 +34,5 @@ The configuration files will include some of the main keywords of programs.
 - The Configuration files that the Binary File Needs
 
 ## v11.x.x-LTS
+- Starting from this release, the separated modules from the `main.cpp` file will be permanently deleted from the Jenny Toolkit CLI project.
+- Instead of losing those modules, Jenny will start using them with 
