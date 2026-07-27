@@ -12,7 +12,10 @@ This document is prepared to make the next changes visible for all of the people
 ## NOTICE: 
 - v7.x.x-LTS version of Jenny will not have a quite long support time unlike v5.1.9-LTS. The lack of the package manager access feature will be a negative part of the next long-term support release.
 - Another reason for the native package manager access being replaced by Dawn is that the `check-updates` and `upgrade-apps` commands are not used by even `hypernova-developer`, the lonely maintainer.
-- Also, the integration of Dawn Package Manager will increase the UX of the Jenny ecosystem. The philosophy of Jenny is to combine all of the tools made by `hypernova-developer` and make them accessible from one tool but only different commands. 
+- Also, the integration of Dawn Package Manager will increase the UX of the Jenny ecosystem. The philosophy of Jenny is to combine all of the tools made by `hypernova-developer` and make them accessible from one tool but only different commands.
+
+## NOTICE 
+- The plans for the releases starting from v9.x.x-ALPHA are not definite. They will change in time. 
 
 ## v9.x.x-LTS
 - The Jenny Toolkit CLI project will switch back to the modular layout at least for the new modules. The integrated old modules will not be separated again from the main code.
