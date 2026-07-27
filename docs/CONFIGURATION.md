@@ -31,3 +31,23 @@ Every line holds the path of one simple and still file.
 ## Critical Mention
 If you do not have any of these files, do not worry. Jenny will still work without the function that the file you do not have is a necessary. 
 But do NOT delete a line. You can just leave he line empty but every line has to hold the file that I mentioned above. 
+
+## Sample Configurations
+
+- Linux:
+```conf
+/usr/bin/gcc
+/usr/bin/g++
+/usr/bin/gfortran
+/usr/bin/mcs
+/usr/bin/python
+/home/caligron/include/SyntaX_for_Fortran
+/home/caligron/include/raylib/include
+/home/caligron/include/raylib/lib
+/home/caligron/quarantine
+```
+
+- Windows:
+```conf
+
+```
