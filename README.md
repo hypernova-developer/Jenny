@@ -21,6 +21,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 - **Sentinel Core:** Performs heuristic process analysis and active network monitoring to identify unsigned binaries and unverified socket connections.
 - **CompileX Engine:** High-performance compilation utility built for aggressive execution speed and operational efficiency.
   - *Note:* The CompileX module has been migrated from batch execution scripts to a compiled C++ implementation.
+  - *NOTE:* The CompileX module used in Jenny Toolkit CLI project is a different edition from the original one. The module from this project has the ability to be configured out of the code and be changed without being compiled again.
 
 ---
 
