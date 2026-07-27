@@ -42,7 +42,7 @@ Refer to the [Releases Support Policy](docs/RELEASES.md) for information for all
 ---
 
 ## Information About the Roadmap of Jenny Toolkit CLI Project
-Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the releases.
+Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon releases.
 
 ---
 
