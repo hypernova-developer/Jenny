@@ -37,3 +37,5 @@ The configuration files will include some of the main keywords of programs.
 - Starting from this release, the separated modules from the `main.cpp` file will be permanently deleted from the Jenny Toolkit CLI project.
 - Instead of losing those modules, Jenny will start using them with the new feature that makes Jenny be able to trigger any other tool. 
 - This will make Jenny a mobile tool that will adapt any computer that it will be run on. 
+
+> hypernova-developer
