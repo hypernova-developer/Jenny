@@ -15,7 +15,6 @@ This document is prepared to make the next changes visible for all of the people
 - Also, the integration of Dawn Package Manager will increase the UX of the Jenny ecosystem. The philosophy of Jenny is to combine all of the tools made by `hypernova-developer` and make them accessible from one tool but only different commands. 
 
 ## v9.x.x-LTS
-NOTICE: The plans for this release are not definite. They might change in time. 
 - The Jenny Toolkit CLI project will switch back to the modular layout at least for the new modules. The integrated old modules will not be separated again from the main code.
 - This will make it easier to integrate a project like Mahoraga which took more than 3100 lines of code to Jenny.
 - This benefit will make Jenny become a lot wider toolkit including almost all of the other tools made by `hypernova-developer`. 
