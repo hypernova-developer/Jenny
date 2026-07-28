@@ -1,5 +1,4 @@
-## Goal
-This document is prepared to make the next changes visible for all of the people and the lonely developer. 
+
 
 ## v7.x.x-LTS
 - The Linux compatibility feature from v7.0.0-BETA will be fully available and ready to use without bugs or issues. 
