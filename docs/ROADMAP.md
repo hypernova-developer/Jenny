@@ -1,4 +1,7 @@
+# Jenny Toolkit - Project Roadmap
 
+> **Author & Maintainer:** hypernova-developer  
+> **Goal:** This document outlines upcoming changes and version milestones for both the community and the maintainer.
 
 ## v7.x.x-LTS
 - The Linux compatibility feature from v7.0.0-BETA will be fully available and ready to use without bugs or issues. 
