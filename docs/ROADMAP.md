@@ -14,7 +14,7 @@ This document is prepared to make the next changes visible for all of the people
 - Another reason for the native package manager access being replaced by Dawn is that the `check-updates` and `upgrade-apps` commands are not used by even `hypernova-developer`, the lonely maintainer.
 - Also, the integration of Dawn Package Manager will increase the UX of the Jenny ecosystem. The philosophy of Jenny is to combine all of the tools made by `hypernova-developer` and make them accessible from one tool but only different commands.
 
-## NOTICE 
+## DISCLAIMER
 - The plans for the releases starting from v9.x.x-ALPHA are not definite. They will change in time. 
 
 ## v9.x.x-LTS
