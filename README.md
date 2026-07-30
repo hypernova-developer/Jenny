@@ -27,7 +27,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ## Installation
 
-Refer to the [Installation Manual](docs/INSTALLATION.md) for full deployment instructions.
+Refer to the [Installation Manual for Linux](docs/INSTALLATION-ON-LINUX.md) [Installation Manual for Windows](docs/INSTALLATION-ON-WINDOWS.md) for full deployment instructions.
 
 ---
 
