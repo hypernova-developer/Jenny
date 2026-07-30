@@ -68,16 +68,17 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 
 ## System Storage Requirements
 
+
 ### Jenny v7.0.0-LTS
-The Windows binary executable for Jenny on the latest release require approximately **1.24 MB** of local storage space.
+The Linux binary executable for Jenny on the latest release require approximately **133,6 KB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny v6.0.0-LTS
-The Windows binary executable for Jenny on the latest release require approximately **1.25 MB** of local storage space.
+The Windows binary executable for Jenny on this release require approximately **1.25 MB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny v5.1.9-LTS
-The Windows binary executable(s) for Jenny on the final supported legacy release require approximately **3.22 MB** of local storage space.
+The Windows binary executable(s) for Jenny on this release require approximately **3.22 MB** of local storage space.
 A minimum allocation of **6.00 MB** is recommended to accommodate local logging and configuration caches.
 
 ---
