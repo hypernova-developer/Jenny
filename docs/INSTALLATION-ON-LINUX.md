@@ -4,7 +4,7 @@ This file is an installation guide for Linux users. Please follow all steps ment
 
 ## Downloading Jenny
 
-**Git** is required for this section. If it is not installed, you can install it using your distribution's package manager (e.g., `sudo apt install git` on Debian/Pardus/Ubuntu).
+**Git** is required for this section. If it is not installed, you can install it using your distribution's package manager (e.g., `sudo apt install git` on Debian/Kali/Ubuntu).
 
 Open a terminal window, then copy and paste the command below:
 
