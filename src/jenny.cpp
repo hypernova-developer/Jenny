@@ -417,7 +417,7 @@ namespace JennyModules
         void ReportAndHandleThreats();
         void ScanDirectoryRecursively(std::string root);
         int AnalyzeFile(std::string fullPath, std::vector<std::string>& reasons);
-        bool CheckStartupStatus(std::string path);
+        bool StartupStatus(std::string path);
         bool IsSimilar(std::string s1, std::string s2);
         void QuarantineFile(std::string sourcePath);
         void RestoreQuarantine();
@@ -1244,7 +1244,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.0.0-BETA";
+    std::string version = "v7.1.0-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
@@ -1291,32 +1291,6 @@ int main(int argc, char* argv[])
     {
         JennyModules::ProtocolX px;
         std::cout << "Decoded Output: " << px.decode(argv[2]) << std::endl;
-    }
-    else if (command == "--check-updates")
-    {
-#ifdef _WIN32
-        std::cout << "\n[*] Scanning for updates via Winget..." << std::endl;
-        system("winget upgrade");
-#else
-        std::cout << "\n[*] Checking for system updates..." << std::endl;
-        system("apt list --upgradable 2>/dev/null || yum check-update 2>/dev/null || dnf check-update 2>/dev/null || echo 'Update command not available'");
-#endif
-    }
-    else if (command == "--upgrade-apps")
-    {
-#ifdef _WIN32
-        if (argc > 2) system(("winget upgrade --id " + std::string(argv[2])).c_str());
-        else system("winget upgrade --all");
-#else
-        if (argc > 2)
-        {
-            system(("apt-get install --only-upgrade -y " + std::string(argv[2]) + " 2>/dev/null || yum update -y " + std::string(argv[2]) + " 2>/dev/null || dnf update -y " + std::string(argv[2]) + " 2>/dev/null").c_str());
-        }
-        else
-        {
-            system("apt-get upgrade -y 2>/dev/null || yum update -y 2>/dev/null || dnf upgrade -y 2>/dev/null || echo 'Update command not available'");
-        }
-#endif
     }
     else if (command == "--compile" && argc > 2)
     {
@@ -1392,8 +1366,6 @@ int main(int argc, char* argv[])
         printf("%-22s | %s\n", "--software", "Display OS version, build and kernel information");
         printf("%-22s | %s\n", "--px-e", "(ProtocolX) Encode secure message");
         printf("%-22s | %s\n", "--px-d", "(ProtocolX) Decode secure message");
-        printf("%-22s | %s\n", "--check-updates", "Scan for updates");
-        printf("%-22s | %s\n", "--upgrade-apps", "Upgrade via Winget");
         printf("%-22s | %s\n", "--compile", "(CompileX) Compile files");
         printf("%-22s | %s\n", "--sentinel", "(Sentinel) Threat scan");
         printf("%-22s | %s\n", "--sentinel-network", "(Sentinel) Network scan");
