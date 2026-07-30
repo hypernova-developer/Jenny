@@ -2,11 +2,11 @@
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from the terminal interface.
 
-- **Current Version:** 7.0.0-BETA
+- **Current Version:** 7.0.0-LTS
 
 ---
 
-## Release Notes for Jenny v7.0.0-BETA
+## Release Notes for Jenny v7.0.0-LTS
 
 **Compatibility**: Jenny is compatible with Linux distributions starting from this release. The features on the Linux side will be less problematic in time with the next long-term support release. 
 
