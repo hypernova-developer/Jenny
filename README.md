@@ -1,4 +1,4 @@
-# Jenny Toolkit CLI
+# JTK
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from the terminal interface.
 
@@ -6,7 +6,7 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ---
 
-## Release Notes for Jenny v7.1.6-LTS
+## Release Notes for JTK v7.1.6-LTS
 
 **Compatibility**: Jenny is compatible with Linux distributions starting from this release. The features on the Linux side will be less problematic in time with the next long-term support release. 
 
@@ -66,11 +66,11 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 
 ## System Storage Requirements
 
-### Jenny v7.1.6-LTS
+### JTK v7.1.6-LTS
 The Linux binary executable for Jenny on the latest release require approximately **133,6 KB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
-### Jenny v6.0.0-LTS
+### Jenny Toolkit CLI v6.0.0-LTS
 The Windows binary executable for Jenny on this release require approximately **1.25 MB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
