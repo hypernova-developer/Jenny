@@ -1112,7 +1112,13 @@ struct ConfigMain
 ConfigMain loadConfigMain()
 {
     ConfigMain cfg;
+
+#ifdef __linux__
+    std::ifstream file("/usr/local/bin/jenny.conf");
+#else
     std::ifstream file("jenny.conf");
+#endif
+
     if (file.is_open())
     {
         std::getline(file, cfg.gcc);
