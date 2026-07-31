@@ -1244,7 +1244,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.1.0-LTS";
+    std::string version = "v7.1.1-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
@@ -1371,6 +1371,10 @@ int main(int argc, char* argv[])
         printf("%-22s | %s\n", "--sentinel-network", "(Sentinel) Network scan");
         printf("%-22s | %s\n", "--vault", "Password manager");
         std::cout << std::string(75, '-') << std::endl;
+    }
+    else
+    {
+    	std::cout << "\nNo valid command entered. Try: jenny --help" << std::endl;
     }
 
     return 0;
