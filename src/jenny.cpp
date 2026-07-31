@@ -220,15 +220,18 @@ namespace JennyModules
         std::vector<GPUInfo> getGPUs()
         {
             std::vector<GPUInfo> gpus;
-            FILE* pipe = popen("lspci 2>/dev/null | grep -i vga | head -1 | sed 's/.*: //'", "r");
+            FILE* pipe = popen("lspci 2>/dev/null | grep -E -i \"vga|3d|display\" | sed 's/.*: //'", "r");
             if (pipe)
             {
                 char buf[256];
-                if (fgets(buf, 256, pipe))
+                while (fgets(buf, 256, pipe))
                 {
                     std::string name(buf);
                     name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
-                    gpus.push_back({name, "N/A"});
+                    if (!name.empty())
+                    {
+                        gpus.push_back({name, "N/A"});
+                    }
                 }
                 pclose(pipe);
             }
@@ -242,7 +245,7 @@ namespace JennyModules
         std::string getStorage()
         {
             std::string storageStr = "";
-            FILE* pipe = popen("df -h --output=target,size 2>/dev/null | tail -n +2", "r");
+            FILE* pipe = popen("df -h -x tmpfs -x devtmpfs -x squashfs --output=target,size 2>/dev/null | tail -n +2", "r");
             if (pipe)
             {
                 char buf[256];
@@ -256,6 +259,10 @@ namespace JennyModules
                     }
                 }
                 pclose(pipe);
+            }
+            if (!storageStr.empty()) 
+            {
+                storageStr.erase(storageStr.length() - 3);
             }
             return storageStr;
         }
@@ -1244,7 +1251,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.1.1-LTS";
+    std::string version = "v7.1.3-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
