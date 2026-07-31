@@ -66,7 +66,7 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 
 ## System Storage Requirements
 
-### JTK v7.1.6-LTS
+### JTK v7.2.1-LTS
 The Linux binary executable for Jenny on the latest release require approximately **133,6 KB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
