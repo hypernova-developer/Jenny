@@ -2,13 +2,13 @@
 This is a guide for new users seeking information about the releases for the JTK Project. The releases were categorized under 7 headings. 
 
 ## Latest Stable Release
-[Jenny v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
+[JTK v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
 
 ## Latest Testing Release
 There are no supported testing releases currently.
 
 ## Supported Stable Releases
-- [Jenny v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
+- [JTK v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
 - [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS)
 
 ## Supported Legacy Releases
