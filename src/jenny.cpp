@@ -245,22 +245,21 @@ namespace JennyModules
         std::string getStorage()
         {
             std::string storageStr = "";
-            FILE* pipe = popen("df -h -x tmpfs -x devtmpfs -x squashfs --output=target,size 2>/dev/null | tail -n +2", "r");
+            FILE* pipe = popen("df -h -x tmpfs -x devtmpfs -x squashfs -x efivarfs --output=target,size 2>/dev/null | tail -n +2 | awk '{printf \"%s %s | \", $1, $2}'", "r");
             if (pipe)
             {
                 char buf[256];
                 while (fgets(buf, 256, pipe))
                 {
                     std::string line(buf);
-                    line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
                     if (!line.empty())
                     {
-                        storageStr += line + " | ";
+                        storageStr += line;
                     }
                 }
                 pclose(pipe);
             }
-            if (!storageStr.empty()) 
+            if (!storageStr.empty() && storageStr.length() >= 3) 
             {
                 storageStr.erase(storageStr.length() - 3);
             }
@@ -957,143 +956,163 @@ namespace JennyModules
     }
 
     class CompileX
-    {
-    public:
-        void execute(const std::string& arg1, const std::string& confPath = "jenny.conf")
-        {
-            struct ConfigLocal
-            {
-                std::string gcc;
-                std::string gxx;
-                std::string gfortran;
-                std::string csc;
-                std::string python;
-                std::string syntax_inc;
-                std::string raylib_inc;
-                std::string raylib_lib;
-                std::string quarantine_dir;
-                std::string ollama_model;
-            };
+	{
+	public:
+		void execute(const std::string& arg1, const std::string& confPath = "jenny.conf")
+		{
+			struct ConfigLocal
+			{
+				std::string gcc;
+				std::string gxx;
+				std::string gfortran;
+				std::string csc;
+				std::string python;
+				std::string syntax_inc;
+				std::string raylib_inc;
+				std::string raylib_lib;
+				std::string quarantine_dir;
+				std::string ollama_model;
+			};
 
-            ConfigLocal cfg;
-            std::ifstream file(confPath);
-            if (file.is_open())
-            {
-                std::getline(file, cfg.gcc);
-                std::getline(file, cfg.gxx);
-                std::getline(file, cfg.gfortran);
-                std::getline(file, cfg.csc);
-                std::getline(file, cfg.python);
-                std::getline(file, cfg.syntax_inc);
-                std::getline(file, cfg.raylib_inc);
-                std::getline(file, cfg.raylib_lib);
-                std::getline(file, cfg.quarantine_dir);
-                std::getline(file, cfg.ollama_model);
-                file.close();
-            }
+			ConfigLocal cfg;
+			std::ifstream file(confPath);
+			if (file.is_open())
+			{
+				std::getline(file, cfg.gcc);
+				std::getline(file, cfg.gxx);
+				std::getline(file, cfg.gfortran);
+				std::getline(file, cfg.csc);
+				std::getline(file, cfg.python);
+				std::getline(file, cfg.syntax_inc);
+				std::getline(file, cfg.raylib_inc);
+				std::getline(file, cfg.raylib_lib);
+				std::getline(file, cfg.quarantine_dir);
+				std::getline(file, cfg.ollama_model);
+				file.close();
+			}
 
-            auto log_operation = [](const std::string& message)
-            {
-                std::ofstream log_file("compilex_history.log", std::ios::app);
-                auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-                char buf[26];
+			auto log_operation = [](const std::string& message)
+			{
+				std::ofstream log_file("compilex_history.log", std::ios::app);
+				auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+				char buf[26];
 #ifdef _WIN32
-                ctime_s(buf, sizeof(buf), &now);
+				ctime_s(buf, sizeof(buf), &now);
 #else
-                ctime_r(&now, buf);
+				ctime_r(&now, buf);
 #endif
-                std::string ts(buf);
-                ts.pop_back();
-                log_file << "[" << ts << "] " << message << std::endl;
-            };
+				std::string ts(buf);
+				ts.pop_back();
+				log_file << "[" << ts << "] " << message << std::endl;
+			};
 
-            if (arg1 == "--version")
-            {
-                std::cout << "---------------------------------------------------" << std::endl;
-                std::cout << "[CompileX Engine]" << std::endl;
-                std::cout << "Version: 3.0.1-LTS \"Character-Safe Edition\"" << std::endl;
-                std::cout << "Developer: hypernova-developer" << std::endl;
-                std::cout << "Focus: C++, C, Fortran, C#, Python" << std::endl;
-                std::cout << "---------------------------------------------------" << std::endl;
-                return;
-            }
+			if (arg1 == "--version")
+			{
+				std::cout << "---------------------------------------------------" << std::endl;
+				std::cout << "[CompileX Engine]" << std::endl;
+				std::cout << "Version: 3.0.1-LTS \"Character-Safe Edition\"" << std::endl;
+				std::cout << "Developer: hypernova-developer" << std::endl;
+				std::cout << "Focus: C++, C, Fortran, C#, Python" << std::endl;
+				std::cout << "---------------------------------------------------" << std::endl;
+				return;
+			}
 
-            fs::path source_path = fs::path(arg1);
+			fs::path source_path = fs::path(arg1);
 
-            if (!fs::exists(source_path))
-            {
-                std::cout << "[CompileX] Error: Source file not found." << std::endl;
-                return;
-            }
+			if (!fs::exists(source_path))
+			{
+				std::cout << "[CompileX] Error: Source file not found." << std::endl;
+				return;
+			}
 
-            std::string ext = source_path.extension().string();
+			std::string ext = source_path.extension().string();
 #ifdef _WIN32
-            std::string exe_name = source_path.stem().string() + ".exe";
+			std::string exe_name = source_path.stem().string() + ".exe";
 #else
-            std::string exe_name = source_path.stem().string();
+			std::string exe_name = source_path.stem().string();
 #endif
-            std::string cmd = "";
-            std::string lang = "";
+			std::string cmd = "";
+			std::string lang = "";
 
-            if (ext == ".cpp")
-            {
-                lang = "C++";
+			if (ext == ".cpp")
+			{
+				lang = "C++";
 #ifdef _WIN32
-                cmd = "\"\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lopengl32 -lgdi32 -lwinmm\"";
+				cmd = "\"\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lopengl32 -lgdi32 -lwinmm\"";
 #else
-                cmd = "\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lGL -lm -lpthread -ldl -lrt -lX11\"";
+				cmd = "\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
 #endif
-            }
-            else if (ext == ".c")
-            {
-                lang = "C";
-                cmd = "\"\"" + cfg.gcc + "\" -O3 -s -static -static-libgcc -I\"" + cfg.syntax_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\"\"";
-            }
-            else if (ext == ".f90")
-            {
-                lang = "Fortran";
-                cmd = "\"\"" + cfg.gfortran + "\" -O3 -static \"" + arg1 + "\" -o \"" + exe_name + "\"\"";
-            }
-            else if (ext == ".cs")
-            {
-                lang = "C#";
-                cmd = "\"\"" + cfg.csc + "\" /nologo /optimize+ /out:\"" + exe_name + "\" \"" + arg1 + "\"\"";
-            }
-            else if (ext == ".py")
-            {
-                std::cout << "[CompileX] Executing " << arg1 << " (Python)..." << std::endl;
-                std::cout << "---------------------------------------------------" << std::endl;
-                system(std::string("\"\"" + cfg.python + "\" \"" + arg1 + "\"\"").c_str());
-                std::cout << "---------------------------------------------------" << std::endl;
-                log_operation("Executed " + arg1 + " (Python)");
-                return;
-            }
+			}
+			else if (ext == ".c")
+			{
+				lang = "C";
+#ifdef _WIN32
+				cmd = "\"\"" + cfg.gcc + "\" -O3 -s -static -static-libgcc -I\"" + cfg.syntax_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\"\"";
+#else
+				cmd = "\"" + cfg.gcc + "\" -O3 -s -static -static-libgcc -I\"" + cfg.syntax_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\"";
+#endif
+			}
+			else if (ext == ".f90")
+			{
+				lang = "Fortran";
+#ifdef _WIN32
+				cmd = "\"\"" + cfg.gfortran + "\" -O3 -static \"" + arg1 + "\" -o \"" + exe_name + "\"\"";
+#else
+				cmd = "\"" + cfg.gfortran + "\" -O3 -static \"" + arg1 + "\" -o \"" + exe_name + "\"";
+#endif
+			}
+			else if (ext == ".cs")
+			{
+				lang = "C#";
+#ifdef _WIN32
+				cmd = "\"\"" + cfg.csc + "\" /nologo /optimize+ /out:\"" + exe_name + "\" \"" + arg1 + "\"\"";
+#else
+				cmd = "\"" + cfg.csc + "\" /nologo /optimize+ /out:\"" + exe_name + "\" \"" + arg1 + "\"";
+#endif
+			}
+			else if (ext == ".py")
+			{
+				std::cout << "[CompileX] Executing " << arg1 << " (Python)..." << std::endl;
+				std::cout << "---------------------------------------------------" << std::endl;
+#ifdef _WIN32
+				system(std::string("\"\"" + cfg.python + "\" \"" + arg1 + "\"\"").c_str());
+#else
+				system(std::string("\"" + cfg.python + "\" \"" + arg1 + "\"").c_str());
+#endif
+				std::cout << "---------------------------------------------------" << std::endl;
+				log_operation("Executed " + arg1 + " (Python)");
+				return;
+			}
 
-            std::cout << "[CompileX] Compiling " << arg1 << " (" << lang << ")..." << std::endl;
-            int res = system(cmd.c_str());
+			std::cout << "[CompileX] Compiling " << arg1 << " (" << lang << ")..." << std::endl;
+			int res = system(cmd.c_str());
 
-            if (res == 0)
-            {
-                std::cout << "---------------------------------------------------" << std::endl;
-                std::cout << "[CompileX] Success: Build complete." << std::endl;
+			if (res == 0)
+			{
+				std::cout << "---------------------------------------------------" << std::endl;
+				std::cout << "[CompileX] Success: Build complete." << std::endl;
 
-                std::ofstream built_list(".compilex_built", std::ios::app);
-                built_list << exe_name << "\n";
+				std::ofstream built_list(".compilex_built", std::ios::app);
+				built_list << exe_name << "\n";
 
-                log_operation("Compiled " + exe_name + " (" + lang + ")");
+				log_operation("Compiled " + exe_name + " (" + lang + ")");
 
-                std::cout << "[CompileX] Executing binary..." << std::endl;
-                std::cout << "---------------------------------------------------" << std::endl;
-                system(std::string("\"" + exe_name + "\"").c_str());
-            }
-            else
-            {
-                std::cout << "---------------------------------------------------" << std::endl;
-                std::cout << "[CompileX] Error: Compilation failed." << std::endl;
-                log_operation("Failed to compile " + arg1 + " (" + lang + ")");
-            }
-        }
-    };
+				std::cout << "[CompileX] Executing binary..." << std::endl;
+				std::cout << "---------------------------------------------------" << std::endl;
+#ifdef _WIN32
+				system(std::string("\"" + exe_name + "\"").c_str());
+#else
+				system(std::string("./\"" + exe_name + "\"").c_str());
+#endif
+			}
+			else
+			{
+				std::cout << "---------------------------------------------------" << std::endl;
+				std::cout << "[CompileX] Error: Compilation failed." << std::endl;
+				log_operation("Failed to compile " + arg1 + " (" + lang + ")");
+			}
+		}
+	};
 }
 
 struct ConfigMain
@@ -1257,7 +1276,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.1.6-LTS";
+    std::string version = "v7.2.1-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
