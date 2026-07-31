@@ -1251,7 +1251,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.1.3-LTS";
+    std::string version = "v7.1.5-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
