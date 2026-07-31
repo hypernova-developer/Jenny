@@ -29,7 +29,7 @@ cd "Jenny/src/"
 All modules have been unified into a single core architecture. Ensure that `g++` is installed and accessible in your system's `PATH`. If everything is ready, run the following command to compile the binary:
 
 ```bash
-g++ -std=c++20 -O3 -Wall -Wextra jenny.cpp -o jenny -pthread
+g++ -std=c++20 -O3 -Wall -Wextra jenny.cpp -o jenny -pthread -march=native
 
 ```
 
@@ -46,7 +46,11 @@ After this step, you can execute `jenny` from anywhere in your system.
 
 ## Configuring Jenny
 
-Jenny relies on a configuration file (`jenny.conf`) for system paths and settings. Nothing is hardcoded into the binaries. If you modify your paths or settings in `jenny.conf`, you will not need to recompile the project. Before running **Jenny**, make sure you have edited `jenny.conf` according to your environment.
+- Jenny relies on a configuration file (`jenny.conf`) for system paths and settings. Nothing is hardcoded into the binaries. If you modify your paths or settings in `jenny.conf.linux`, you will not need to recompile the project. Before running **Jenny**, make sure you have edited `jenny.conf` according to your environment.
+- After editing the configuration file, use the command
+```bash
+sudo mv ./jenny.conf.linux /usr/local/bin/jenny.conf
+```
 
 ## Information About Configuration
 
