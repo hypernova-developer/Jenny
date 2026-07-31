@@ -55,8 +55,6 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 | `jenny --software` | Displays OS build, versioning, and kernel metadata. |
 | `jenny --px-e` | (ProtocolX) Encodes secure payloads using external binaries. |
 | `jenny --px-d` | (ProtocolX) Decodes secure payloads using external binaries. |
-| `jenny --check-updates` | Scans for application and driver updates. |
-| `jenny --upgrade-apps` | Upgrades installed software packages via Winget. |
 | `jenny --compile` | Executes the high-performance CompileX build system. |
 | `jenny --sentinel` | Runs Sentinel heuristic scans on the current working directory. |
 | `jenny --sentinel-network` | Scans active network connections for unverified process sockets. |
