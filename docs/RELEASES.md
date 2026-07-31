@@ -1,5 +1,5 @@
 ## Goal
-This is a guide for new users seeking information about the releases for the Jenny Toolkit CLI Project. The releases were categorized under 7 headings. 
+This is a guide for new users seeking information about the releases for the JTK Project. The releases were categorized under 7 headings. 
 
 ## Latest Stable Release
 [Jenny v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
