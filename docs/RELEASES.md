@@ -2,19 +2,21 @@
 This is a guide for new users seeking information about the releases for the Jenny Toolkit CLI Project. The releases were categorized under 7 headings. 
 
 ## Latest Stable Release
-[Jenny v7.1.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.0-LTS)
+[Jenny v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
 
 ## Latest Testing Release
-There are no suported testing releases currently.
+There are no supported testing releases currently.
 
 ## Supported Stable Releases
+- [Jenny v7.1.6-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.6-LTS)
 - [Jenny v6.0.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v6.0.0-LTS)
 
 ## Supported Legacy Releases
 - [Jenny v5.1.9-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.9-LTS)
-- [Jenny v5.1.4-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS)
 
 ## Unsupported Releases
+- [Jenny v7.1.0-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v7.1.0-LTS)
+- [Jenny v5.1.4-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v5.1.4-LTS)
 - [Jenny v4.2.1-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.2.1-LTS)
 - [Jenny v4.1.1-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.1.1-LTS)
 - [Jenny v4.0.1-LTS](https://github.com/hypernova-developer/Jenny/releases/tag/v4.0.1-LTS)
