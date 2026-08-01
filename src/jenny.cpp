@@ -795,7 +795,7 @@ namespace JennyModules
 
                     if (!pidStr.empty() && pidStr != "0")
                     {
-                        int pid = std::stoi(pidStr);
+                        [[maybe_unused]] int pid = std::stoi(pidStr);
                         std::string procPath = "/proc/" + pidStr + "/exe";
                         char exeBuf[1024];
                         ssize_t exeLen = readlink(procPath.c_str(), exeBuf, sizeof(exeBuf) - 1);
@@ -958,7 +958,7 @@ namespace JennyModules
     class CompileX
 	{
 	public:
-		void execute(const std::string& arg1, const std::string& confPath = "jenny.conf")
+		void execute(const std::string& arg1, const std::string& confPath = "/usr/local/bin/jenny.conf")
 		{
 			struct ConfigLocal
 			{
@@ -971,7 +971,6 @@ namespace JennyModules
 				std::string raylib_inc;
 				std::string raylib_lib;
 				std::string quarantine_dir;
-				std::string ollama_model;
 			};
 
 			ConfigLocal cfg;
@@ -987,7 +986,6 @@ namespace JennyModules
 				std::getline(file, cfg.raylib_inc);
 				std::getline(file, cfg.raylib_lib);
 				std::getline(file, cfg.quarantine_dir);
-				std::getline(file, cfg.ollama_model);
 				file.close();
 			}
 
@@ -1040,7 +1038,7 @@ namespace JennyModules
 #ifdef _WIN32
 				cmd = "\"\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lopengl32 -lgdi32 -lwinmm\"";
 #else
-				cmd = "\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" -I\"" + cfg.raylib_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -L\"" + cfg.raylib_lib + "\" -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
+				cmd = "\"" + cfg.gxx + "\" -std=c++23 -O3 -s -static -static-libgcc -static-libstdc++ -I\"" + cfg.syntax_inc + "\" \"" + arg1 + "\" -o \"" + exe_name + "\" -pthread";
 #endif
 			}
 			else if (ext == ".c")
@@ -1276,7 +1274,7 @@ void runExternal(std::string exeName, std::string args)
 
 int main(int argc, char* argv[])
 {
-    std::string version = "v7.2.1-LTS";
+    std::string version = "v7.3.5-LTS";
     ConfigMain cfg = loadConfigMain();
 
     if (argc < 2)
