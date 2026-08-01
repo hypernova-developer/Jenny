@@ -8,8 +8,8 @@ Jenny is a lightweight, local-first system assistant and developer utility desig
 
 ## Release Notes for JTK v7.3.5-LTS
 
-**Compatibility**: The CompileX module had such issues like the hard-coded config file path being wrong and Raylib being a must on Linux side. These were fixed on this release.
-**Final Dot Mark**: JTK v7.3.5-LTS is planned to be the last release having the tag `v7`.
+- **Compatibility**: The CompileX module had such issues like the hard-coded config file path being wrong and Raylib being a must on Linux side. These were fixed on this release.
+- **Final Dot Mark**: JTK v7.3.5-LTS is planned to be the last release having the tag `v7`.
 
 ---
 
