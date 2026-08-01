@@ -2,27 +2,24 @@
 
 Jenny is a lightweight, local-first system assistant and developer utility designed for performance-focused users. It provides deep hardware insights and automates routine system maintenance directly from the terminal interface.
 
-- **Current Version:** 7.2.1-LTS
+- **Current Version:** 7.3.5-LTS
 
 ---
 
-## Release Notes for JTK v7.2.1-LTS
+## Release Notes for JTK v7.3.5-LTS
 
-**Compatibility**: Jenny is being mroe compatible with Linux distributions at this release. The features on the Linux side will be less problematic in time with the next long-term support release. 
+**Compatibility**: The CompileX module had such issues like the hard-coded config file path being wrong and Raylib being a must on Linux side. These were fixed on this release.
+**Final Dot Mark**: JTK v7.3.5-LTS is planned to be the last release having the tag `v7`.
 
 ---
 
 ## Core Features
 
 - **Hardware Diagnostic Engine:** Generates comprehensive hardware utilization reports (CPU, GPU, RAM, Storage, and Display Resolution).
-- **Update Management:** Scans and upgrades system applications via native package manager integration (`winget`).
 - **Cryptographic Security Vault:** Generates and stores cryptographically sound access credentials locally.
 - **Local Execution Architecture:** Designed with zero external API dependencies or cloud latency; all routines execute strictly on the local machine.
 - **Sentinel Core:** Performs heuristic process analysis and active network monitoring to identify unsigned binaries and unverified socket connections.
 - **CompileX Engine:** High-performance compilation utility built for aggressive execution speed and operational efficiency.
-  - *Note:* The CompileX module has been migrated from batch execution scripts to a compiled C++ implementation.
-  - *NOTE:* The CompileX module used in Jenny Toolkit CLI project is a different edition from the original one. The module from this project has the ability to be configured out of the code and be changed without being compiled again.
-
 ---
 
 ## Installation
@@ -58,7 +55,6 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 | `jenny --compile` | Executes the high-performance CompileX build system. |
 | `jenny --sentinel` | Runs Sentinel heuristic scans on the current working directory. |
 | `jenny --sentinel-network` | Scans active network connections for unverified process sockets. |
-| `jenny --restore` | Restores isolated files from the Sentinel quarantine vault. |
 | `jenny --vault` | Generates and manages encrypted local credential stores. |
 | `jenny --help` | Displays full CLI option documentation. |
 
@@ -66,8 +62,8 @@ Refer to the [Roadmap Plan](docs/ROADMAP.md) for information for all the soon re
 
 ## System Storage Requirements
 
-### JTK v7.2.1-LTS
-The Linux binary executable for Jenny on the latest release require approximately **133,6 KB** of local storage space.
+### JTK v7.3.5-LTS
+The Linux binary executable for Jenny on the latest release require approximately **133,7 KB** of local storage space.
 A minimum allocation of **2.50 MB** is recommended to accommodate local logging and configuration caches.
 
 ### Jenny Toolkit CLI v6.0.0-LTS
